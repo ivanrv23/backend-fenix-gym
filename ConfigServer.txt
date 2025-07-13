@@ -1,2 +1,2 @@
-EJECUTAR:  
-node index.js
+EJECUTAR:
+node app.js
