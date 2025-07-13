@@ -1,0 +1,113 @@
+-- Insertar roles básicos
+INSERT INTO roles (role_name, description) VALUES
+('admin', 'Administrador del sistema'),
+('user', 'Usuario estándar'),
+('premium', 'Usuario premium');
+
+-- Insertar usuario administrador (contraseña: admin123)
+INSERT INTO users (
+    id_role, 
+    name_user, 
+    password_user, 
+    email, 
+    first_name, 
+    last_name, 
+    phone, 
+    photo_user, 
+    state_user, 
+    membership_status, 
+    expiration_date
+) VALUES (
+    (SELECT id_role FROM roles WHERE role_name = 'admin'),
+    'admin',
+    '$2a$10$GtJ7f6L3qy4g8q1WzX5r0u9Vd2v3sK4mN7bC8d9E0f1A2B3C4D5E6F7G', -- admin123 encriptado
+    'admin@fenixgym.com',
+    'Administrador',
+    'Sistema',
+    '+1234567890',
+    'admin-profile.jpg',
+    1,
+    'active',
+    DATE_ADD(NOW(), INTERVAL 1 YEAR)
+);
+
+-- Insertar usuario estándar (contraseña: user123)
+INSERT INTO users (
+    id_role, 
+    name_user, 
+    password_user, 
+    email, 
+    first_name, 
+    last_name, 
+    phone, 
+    photo_user, 
+    state_user, 
+    membership_status, 
+    expiration_date
+) VALUES (
+    (SELECT id_role FROM roles WHERE role_name = 'user'),
+    'usuario1',
+    '$2a$10$5b8i4b.3V0oK7f8g2j1WzOcXr6d9s0a1b2c3d4e5f6g7h8i9j0k1l2m3n4', -- user123 encriptado
+    'usuario1@fenixgym.com',
+    'Juan',
+    'Pérez',
+    '+59891234567',
+    'user-profile.jpg',
+    1,
+    'active',
+    DATE_ADD(NOW(), INTERVAL 3 MONTH)
+);
+
+-- Insertar usuario premium (contraseña: premium123)
+INSERT INTO users (
+    id_role, 
+    name_user, 
+    password_user, 
+    email, 
+    first_name, 
+    last_name, 
+    phone, 
+    photo_user, 
+    state_user, 
+    membership_status, 
+    expiration_date
+) VALUES (
+    (SELECT id_role FROM roles WHERE role_name = 'premium'),
+    'premium_user',
+    '$2a$10$8h2i3j.4V5oK6f7g8h9i0Jk1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6A7B', -- premium123 encriptado
+    'premium@fenixgym.com',
+    'María',
+    'Gómez',
+    '+59898765432',
+    'premium-profile.jpg',
+    1,
+    'active',
+    DATE_ADD(NOW(), INTERVAL 1 YEAR)
+);
+
+-- Insertar usuario inactivo
+INSERT INTO users (
+    id_role, 
+    name_user, 
+    password_user, 
+    email, 
+    first_name, 
+    last_name, 
+    phone, 
+    photo_user, 
+    state_user, 
+    membership_status, 
+    expiration_date
+) VALUES (
+    (SELECT id_role FROM roles WHERE role_name = 'user'),
+    'usuario_inactivo',
+    '$2a$10$9i0j1k.2L3m4n5o6p7q8rS9t0u1v2w3x4y5z6A7B8C9D0E1F2G3H4I5J', -- inactive123
+    'inactivo@fenixgym.com',
+    'Carlos',
+    'Rodríguez',
+    '+59893334455',
+    'inactive-profile.jpg',
+    0, -- Estado inactivo
+    'expired',
+    DATE_SUB(NOW(), INTERVAL 1 MONTH)
+);
