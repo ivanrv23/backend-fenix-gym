@@ -21,8 +21,8 @@ exports.getUser = async (req, res) => {
     }
 
     const user = results[0];
-    const isMembershipActive = user.membership_status === 'active' && 
-                              new Date(user.expiration_date) > new Date();
+    const isMembershipActive = user.membership_status === 'active' &&
+      new Date(user.expiration_date) > new Date();
 
     res.success('Usuario obtenido', {
       user: {
@@ -53,7 +53,7 @@ exports.updateProfile = async (req, res) => {
     // Validar datos permitidos
     const allowedFields = ['firstName', 'lastName', 'email', 'phone', 'notifications'];
     const validUpdate = {};
-    
+
     for (const field in updateData) {
       if (allowedFields.includes(field)) {
         validUpdate[field] = updateData[field];
@@ -72,5 +72,33 @@ exports.updateProfile = async (req, res) => {
   } catch (error) {
     console.error('Error actualizando perfil:', error);
     res.serverError('Error al actualizar el perfil');
+  }
+};
+
+// En tu userController.js
+exports.getCurrentUser = async (req, res) => {
+  try {
+    const [user] = await db.query(
+      `SELECT *
+      FROM users WHERE id_user = ?`,
+      [req.user.id]
+    );
+
+    if (!user.length) return res.notFound("Usuario no encontrado");
+
+    res.success("Datos de usuario", {
+      id: user[0].id_user,
+      firstName: user[0].first_name || user[0].name_user,
+      lastName: user[0].last_name || '',
+      email: user[0].email || '',
+      phone: user[0].phone || '',
+      profileImage: user[0].photo_user || '',
+      role: user[0].role_name,
+      membershipActive: isMembershipActive,
+      membershipExpiration: user[0].expiration_date || null,
+      notifications: true
+    });
+  } catch (error) {
+    res.serverError();
   }
 };

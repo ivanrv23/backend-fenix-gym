@@ -9,6 +9,7 @@ router.use(authMiddleware.authenticate);
 // Definir rutas
 router.get('/:id', userController.getUser);
 router.put('/profile', userController.updateProfile);
+router.get('/me', userController.getCurrentUser);
 
 // Para depuración
 console.log('Tipo de updateProfile:', typeof userController.updateProfile);
