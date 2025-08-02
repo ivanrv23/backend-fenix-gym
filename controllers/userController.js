@@ -9,10 +9,8 @@ exports.getUser = async (req, res) => {
 
   try {
     const [results] = await db.query(
-      `SELECT u.*, r.role_name 
-       FROM users u
-       INNER JOIN roles r ON u.id_role = r.id_role
-       WHERE u.id_user = ?`,
+      `SELECT * FROM users u INNER JOIN memberships m ON u.id_membership = m.id_membership
+      INNER JOIN customers c ON u.id_customer = c.id_customer WHERE id_user = ?`,
       [userId]
     );
 
@@ -21,21 +19,24 @@ exports.getUser = async (req, res) => {
     }
 
     const user = results[0];
-    const isMembershipActive = user.membership_status === 'active' &&
-      new Date(user.expiration_date) > new Date();
+    const isMembershipActive = user.state_user === 1 && new Date(user.expiration_user) > new Date()
+      ? "Activa" : "Inactiva";
 
     res.success('Usuario obtenido', {
       user: {
         id: user.id_user,
-        firstName: user.first_name || user.name_user,
-        lastName: user.last_name || '',
-        email: user.email || '',
-        phone: user.phone || '',
-        profileImage: user.photo_user || '',
-        role: user.role_name,
-        membershipActive: isMembershipActive,
-        membershipExpiration: user.expiration_date || null,
-        notifications: true
+        user: user.name_user,
+        name: user.name_customer,
+        lastname: user.lastname_customer,
+        email: user.email_user,
+        phone: user.phone_customer,
+        photo: user.photo_user,
+        idmembership: user.id_membership,
+        namemembership: user.name_membership,
+        statemembership: isMembershipActive,
+        expirationmembership: user.expiration_user,
+        joindate: user.created_user,
+        lastlogin: user.login_user,
       }
     });
   } catch (error) {
@@ -62,7 +63,7 @@ exports.updateProfile = async (req, res) => {
 
     // Actualizar en la base de datos
     await db.query(
-      `UPDATE users 
+      `UPDATE users
        SET ?
        WHERE id_user = ?`,
       [validUpdate, userId]
@@ -79,8 +80,8 @@ exports.updateProfile = async (req, res) => {
 exports.getCurrentUser = async (req, res) => {
   try {
     const [user] = await db.query(
-      `SELECT *
-      FROM users WHERE id_user = ?`,
+      `SELECT * FROM users u INNER JOIN memberships m ON u.id_membership = m.id_membership
+      INNER JOIN customers c ON u.id_customer = c.id_customer WHERE id_user = ?`,
       [req.user.id]
     );
 
@@ -88,15 +89,20 @@ exports.getCurrentUser = async (req, res) => {
 
     res.success("Datos de usuario", {
       id: user[0].id_user,
-      firstName: user[0].first_name || user[0].name_user,
-      lastName: user[0].last_name || '',
-      email: user[0].email || '',
-      phone: user[0].phone || '',
-      profileImage: user[0].photo_user || '',
-      role: user[0].role_name,
-      membershipActive: isMembershipActive,
-      membershipExpiration: user[0].expiration_date || null,
-      notifications: true
+      user: user[0].name_user,
+      name: user[0].name_customer,
+      lastname: user[0].lastname_customer,
+      email: user[0].email_user,
+      phone: user[0].phone_customer,
+      photo: user[0].photo_user,
+      idmembership: user[0].id_membership,
+      namemembership: user[0].name_membership,
+      statemembership:
+        user[0].state_user === 1 && new Date(user[0].expiration_user) > new Date()
+          ? "Activa" : "Inactiva",
+      expirationmembership: user[0].expiration_user,
+      joindate: user[0].created_user,
+      lastlogin: user[0].login_user,
     });
   } catch (error) {
     res.serverError();

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-07-2025 a las 00:50:55
+-- Tiempo de generación: 02-08-2025 a las 22:09:05
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -32,12 +32,21 @@ CREATE TABLE `customers` (
   `document_customer` varchar(20) NOT NULL,
   `name_customer` varchar(200) NOT NULL,
   `lastname_customer` varchar(200) NOT NULL,
-  `address_customer` text NOT NULL,
-  `birth_customer` date NOT NULL,
-  `weight_customer` double NOT NULL,
-  `stature_customer` double NOT NULL,
-  `gender_customer` int(1) NOT NULL
+  `address_customer` text DEFAULT NULL,
+  `phone_customer` varchar(20) DEFAULT NULL,
+  `birth_customer` date DEFAULT NULL,
+  `weight_customer` double NOT NULL DEFAULT 0,
+  `stature_customer` double NOT NULL DEFAULT 0,
+  `gender_customer` int(1) NOT NULL,
+  `created_customer` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `customers`
+--
+
+INSERT INTO `customers` (`id_customer`, `document_customer`, `name_customer`, `lastname_customer`, `address_customer`, `phone_customer`, `birth_customer`, `weight_customer`, `stature_customer`, `gender_customer`, `created_customer`) VALUES
+(1, '00000000', 'Juan', 'Pérez', 'Av. De Prueba 675, Cajamarca', NULL, '2020-06-01', 75, 180, 1, '2025-08-02 11:48:26');
 
 -- --------------------------------------------------------
 
@@ -48,7 +57,7 @@ CREATE TABLE `customers` (
 CREATE TABLE `days` (
   `id_day` int(11) NOT NULL,
   `number_day` int(11) NOT NULL,
-  `description_day` text NOT NULL,
+  `description_day` text DEFAULT NULL,
   `state_day` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
@@ -61,7 +70,7 @@ CREATE TABLE `days` (
 CREATE TABLE `durations` (
   `id_duration` int(11) NOT NULL,
   `minutes_duration` int(11) NOT NULL,
-  `description_duration` text NOT NULL,
+  `description_duration` text DEFAULT NULL,
   `state_duration` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
@@ -74,10 +83,9 @@ CREATE TABLE `durations` (
 CREATE TABLE `exercises` (
   `id_exercise` int(11) NOT NULL,
   `id_machine` int(11) NOT NULL,
-  `rounds_exercise` int(11) NOT NULL,
-  `repetition_exercise` int(11) NOT NULL,
-  `description_exercise` text NOT NULL,
-  `video_exercise` text NOT NULL,
+  `instruction_exercise` text NOT NULL,
+  `description_exercise` text DEFAULT NULL,
+  `video_exercise` text DEFAULT NULL,
   `state_exercise` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
@@ -90,7 +98,7 @@ CREATE TABLE `exercises` (
 CREATE TABLE `goals` (
   `id_goal` int(11) NOT NULL,
   `name_goal` varchar(500) NOT NULL,
-  `description_goal` text NOT NULL,
+  `description_goal` text DEFAULT NULL,
   `state_goal` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
@@ -103,9 +111,44 @@ CREATE TABLE `goals` (
 CREATE TABLE `levels` (
   `id_level` int(11) NOT NULL,
   `name_level` varchar(500) NOT NULL,
-  `description_level` text NOT NULL,
+  `description_level` text DEFAULT NULL,
   `state_level` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `machines`
+--
+
+CREATE TABLE `machines` (
+  `id_machine` int(11) NOT NULL,
+  `name_machine` varchar(500) NOT NULL,
+  `description_machine` text DEFAULT NULL,
+  `state_machine` int(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `memberships`
+--
+
+CREATE TABLE `memberships` (
+  `id_membership` int(11) NOT NULL,
+  `name_membership` varchar(500) NOT NULL,
+  `days_membership` int(11) NOT NULL,
+  `price_membership` double NOT NULL,
+  `description_membership` text DEFAULT NULL,
+  `state_membership` int(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `memberships`
+--
+
+INSERT INTO `memberships` (`id_membership`, `name_membership`, `days_membership`, `price_membership`, `description_membership`, `state_membership`) VALUES
+(1, 'Free', 7, 0, 'Prueba gratis de 7 días.', 1);
 
 -- --------------------------------------------------------
 
@@ -116,30 +159,9 @@ CREATE TABLE `levels` (
 CREATE TABLE `muscles` (
   `id_muscle` int(11) NOT NULL,
   `name_muscle` varchar(500) NOT NULL,
-  `description_muscle` text NOT NULL,
+  `description_muscle` text DEFAULT NULL,
   `state_muscle` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `roles`
---
-
-CREATE TABLE `roles` (
-  `id_role` int(11) NOT NULL,
-  `role_name` varchar(50) NOT NULL,
-  `description` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `roles`
---
-
-INSERT INTO `roles` (`id_role`, `role_name`, `description`) VALUES
-(11, 'admin', 'Administrador del sistema'),
-(12, 'user', 'Usuario estándar'),
-(13, 'premium', 'Usuario premium');
 
 -- --------------------------------------------------------
 
@@ -167,7 +189,9 @@ CREATE TABLE `routine_detail` (
   `id_detail` bigint(20) NOT NULL,
   `id_routine` bigint(20) NOT NULL,
   `id_exercise` int(11) NOT NULL,
-  `weight_detail` double NOT NULL
+  `weight_detail` double NOT NULL,
+  `repetition_detail` int(11) NOT NULL,
+  `round_detail` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
@@ -180,7 +204,7 @@ CREATE TABLE `routine_muscles` (
   `id_routinemuscle` bigint(20) NOT NULL,
   `id_routine` bigint(20) NOT NULL,
   `id_muscle` int(11) NOT NULL,
-  `description_routinemuscle` text NOT NULL
+  `description_routinemuscle` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
@@ -190,32 +214,27 @@ CREATE TABLE `routine_muscles` (
 --
 
 CREATE TABLE `users` (
-  `id_user` int(11) NOT NULL,
-  `id_role` int(11) NOT NULL,
-  `name_user` varchar(50) NOT NULL,
-  `password_user` varchar(255) NOT NULL,
-  `refresh_token` varchar(255) DEFAULT NULL,
-  `email` varchar(100) NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `photo_user` varchar(255) DEFAULT 'default.jpg',
-  `state_user` tinyint(1) DEFAULT 1 COMMENT '0=Inactivo, 1=Activo',
-  `membership_status` varchar(20) DEFAULT 'pending',
-  `expiration_date` datetime DEFAULT NULL,
-  `last_login` datetime DEFAULT NULL,
+  `id_user` bigint(20) NOT NULL,
+  `id_membership` int(11) NOT NULL,
   `id_customer` bigint(20) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `name_user` varchar(200) NOT NULL,
+  `email_user` varchar(500) NOT NULL,
+  `password_user` text NOT NULL,
+  `token_user` text DEFAULT NULL,
+  `photo_user` text NOT NULL,
+  `expiration_user` date NOT NULL,
+  `login_user` datetime DEFAULT NULL,
+  `state_user` int(1) NOT NULL DEFAULT 1,
+  `updated_user` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created_user` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id_user`, `id_role`, `name_user`, `password_user`, `refresh_token`, `email`, `first_name`, `last_name`, `phone`, `photo_user`, `state_user`, `membership_status`, `expiration_date`, `last_login`, `id_customer`, `created_at`, `updated_at`) VALUES
-(1, 11, 'admin', '$2b$10$uX8AXgQj7po91hLfJMzCA.4t5l9rLIsPNkjVHkQUcGm1Q25aBPri2', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3NTM3MzY4MjIsImV4cCI6MTc1NDM0MTYyMn0.ydc7hMwm9Ym6Zj01NO_x0nVCn3xBFaq_-04Y4xDihzI', 'admin@fenixgym.com', 'Administrador', 'Sistema', '+1234567890', NULL, 1, 'active', '2025-07-12 00:00:00', NULL, 1, '2025-07-13 01:20:26', '2025-07-28 21:30:44'),
-(2, 12, 'usuario1', '$2b$10$MQZeglVzSH6ElGKXKeCsmOoUcgGFJTW98zSqXI8SEiBUlHtwfzm1q', NULL, 'usuario1@fenixgym.com', 'Juan', 'Pérez', '+59891234567', 'user-profile.jpg', 1, 'active', '2025-10-12 00:00:00', NULL, 0, '2025-07-13 01:20:26', '2025-07-13 01:20:26');
+INSERT INTO `users` (`id_user`, `id_membership`, `id_customer`, `name_user`, `email_user`, `password_user`, `token_user`, `photo_user`, `expiration_user`, `login_user`, `state_user`, `updated_user`, `created_user`) VALUES
+(1, 1, 1, 'admin', 'admin@gmail.com', '$2b$10$uX8AXgQj7po91hLfJMzCA.4t5l9rLIsPNkjVHkQUcGm1Q25aBPri2', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3NTQxNTc1OTEsImV4cCI6MTc1NDc2MjM5MX0.wDeB5sgaeANpdB4u0_vR4VcI12gg0fdxNyX-UMcSH8Q', '../../assets/goku.jpg', '2025-08-31', '2025-07-29 23:30:30', 1, '2025-08-02 12:59:51', '2025-07-29 16:32:09');
 
 --
 -- Índices para tablas volcadas
@@ -258,17 +277,22 @@ ALTER TABLE `levels`
   ADD PRIMARY KEY (`id_level`);
 
 --
+-- Indices de la tabla `machines`
+--
+ALTER TABLE `machines`
+  ADD PRIMARY KEY (`id_machine`);
+
+--
+-- Indices de la tabla `memberships`
+--
+ALTER TABLE `memberships`
+  ADD PRIMARY KEY (`id_membership`);
+
+--
 -- Indices de la tabla `muscles`
 --
 ALTER TABLE `muscles`
   ADD PRIMARY KEY (`id_muscle`);
-
---
--- Indices de la tabla `roles`
---
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`id_role`),
-  ADD UNIQUE KEY `role_name` (`role_name`);
 
 --
 -- Indices de la tabla `routines`
@@ -292,10 +316,7 @@ ALTER TABLE `routine_muscles`
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id_user`),
-  ADD UNIQUE KEY `name_user` (`name_user`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD KEY `id_role` (`id_role`);
+  ADD PRIMARY KEY (`id_user`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -305,7 +326,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id_customer` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_customer` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `days`
@@ -338,16 +359,22 @@ ALTER TABLE `levels`
   MODIFY `id_level` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `machines`
+--
+ALTER TABLE `machines`
+  MODIFY `id_machine` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `memberships`
+--
+ALTER TABLE `memberships`
+  MODIFY `id_membership` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `muscles`
 --
 ALTER TABLE `muscles`
   MODIFY `id_muscle` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `roles`
---
-ALTER TABLE `roles`
-  MODIFY `id_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `routines`
@@ -371,17 +398,7 @@ ALTER TABLE `routine_muscles`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `users`
---
-ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`id_role`) REFERENCES `roles` (`id_role`);
+  MODIFY `id_user` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
