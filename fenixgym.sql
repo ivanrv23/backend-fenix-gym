@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-08-2025 a las 22:09:05
+-- Tiempo de generación: 03-08-2025 a las 00:21:42
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -46,7 +46,9 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id_customer`, `document_customer`, `name_customer`, `lastname_customer`, `address_customer`, `phone_customer`, `birth_customer`, `weight_customer`, `stature_customer`, `gender_customer`, `created_customer`) VALUES
-(1, '00000000', 'Juan', 'Pérez', 'Av. De Prueba 675, Cajamarca', NULL, '2020-06-01', 75, 180, 1, '2025-08-02 11:48:26');
+(1, '00000000', 'Alciviades', 'Cueva', 'Av. De Prueba 675, Cajamarca', '976014890', '2020-06-01', 68, 163, 1, '2025-08-02 11:48:26'),
+(2, '11111111', 'Ronal', 'Ramos', NULL, NULL, '2005-08-01', 0, 0, 1, '2025-08-02 17:12:41'),
+(3, '22222222', 'David', 'López', NULL, NULL, '2006-08-01', 0, 0, 1, '2025-08-02 17:12:41');
 
 -- --------------------------------------------------------
 
@@ -148,7 +150,8 @@ CREATE TABLE `memberships` (
 --
 
 INSERT INTO `memberships` (`id_membership`, `name_membership`, `days_membership`, `price_membership`, `description_membership`, `state_membership`) VALUES
-(1, 'Free', 7, 0, 'Prueba gratis de 7 días.', 1);
+(1, 'Free', 7, 0, 'Prueba gratis de 7 días.', 1),
+(2, 'Golden', 365, 500, 'Premium por 1 año', 1);
 
 -- --------------------------------------------------------
 
@@ -234,7 +237,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `id_membership`, `id_customer`, `name_user`, `email_user`, `password_user`, `token_user`, `photo_user`, `expiration_user`, `login_user`, `state_user`, `updated_user`, `created_user`) VALUES
-(1, 1, 1, 'admin', 'admin@gmail.com', '$2b$10$uX8AXgQj7po91hLfJMzCA.4t5l9rLIsPNkjVHkQUcGm1Q25aBPri2', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3NTQxNTc1OTEsImV4cCI6MTc1NDc2MjM5MX0.wDeB5sgaeANpdB4u0_vR4VcI12gg0fdxNyX-UMcSH8Q', '../../assets/goku.jpg', '2025-08-31', '2025-07-29 23:30:30', 1, '2025-08-02 12:59:51', '2025-07-29 16:32:09');
+(1, 2, 1, 'alci', 'alci@gmail.com', '$2b$10$uX8AXgQj7po91hLfJMzCA.4t5l9rLIsPNkjVHkQUcGm1Q25aBPri2', NULL, '../../assets/goku.jpg', '2026-08-01', '2025-07-29 23:30:30', 1, '2025-08-02 17:17:52', '2025-07-29 16:32:09'),
+(2, 1, 2, 'ronal', 'ronal@gmail.com', '$2b$10$uX8AXgQj7po91hLfJMzCA.4t5l9rLIsPNkjVHkQUcGm1Q25aBPri2', NULL, '../../assets/goku.jpg', '2025-08-31', NULL, 1, '2025-08-02 17:21:04', '2025-08-02 17:15:31'),
+(3, 1, 3, 'david', 'david@gmail.com', '$2b$10$uX8AXgQj7po91hLfJMzCA.4t5l9rLIsPNkjVHkQUcGm1Q25aBPri2', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3NTQxNzMxODQsImV4cCI6MTc1NDc3Nzk4NH0.aoXzaj2Zyph55zFNLJNkE2TpKHdKKQKmwl6M9Mp38z4', '../../assets/goku.jpg', '2025-08-31', NULL, 1, '2025-08-02 17:21:17', '2025-08-02 17:15:31');
 
 --
 -- Índices para tablas volcadas
@@ -326,7 +331,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id_customer` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_customer` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `days`
@@ -368,7 +373,7 @@ ALTER TABLE `machines`
 -- AUTO_INCREMENT de la tabla `memberships`
 --
 ALTER TABLE `memberships`
-  MODIFY `id_membership` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_membership` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `muscles`
@@ -398,7 +403,7 @@ ALTER TABLE `routine_muscles`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_user` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

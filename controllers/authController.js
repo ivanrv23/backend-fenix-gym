@@ -113,9 +113,9 @@ exports.refreshToken = async (req, res) => {
     // Generar nuevo access token
     const newAccessToken = jwt.sign(
       {
-        id: usuario.id_user,
-        user: usuario.name_user,
-        rol: usuario.id_membership,
+        id: user.id_user,
+        user: user.name_user,
+        rol: user.id_membership,
       },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || "15m" }
