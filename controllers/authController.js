@@ -15,17 +15,19 @@ exports.login = async (req, res) => {
     );
 
     if (results.length === 0) {
+      // Mensaje genérico para no revelar información
       return res.unauthorized("Credenciales inválidas");
     }
 
     const usuario = results[0];
 
     if (usuario.state_user !== 1) {
-      return res.unauthorized("Cuenta inactiva");
+      return res.unauthorized("Tu cuenta está inactiva. Contacta al administrador.");
     }
 
     const passwordMatch = await bcrypt.compare(password, usuario.password_user);
     if (!passwordMatch) {
+      // Mensaje genérico para no revelar información
       return res.unauthorized("Credenciales inválidas");
     }
 
