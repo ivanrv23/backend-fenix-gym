@@ -4,26 +4,35 @@ const db = require('../config/db');
 module.exports.authenticate = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.unauthorized('Token de autenticación no proporcionado');
+  if (!authHeader) {
+    return res.unauthorized('Acceso no autorizado');
   }
 
-  const token = authHeader.split(' ')[1];
+  const [bearer, token] = authHeader.split(' ');
+
+  if (bearer !== 'Bearer' || !token) {
+    return res.unauthorized('Formato de token inválido');
+  }
 
   try {
-    // Verificar token JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    // Verificar en DB que el usuario existe y está activo
+    // Verificar que no sea un refresh token
+    if (decoded.type === 'refresh') {
+      return res.unauthorized('Tipo de token inválido');
+    }
+    
     const [users] = await db.query(
-      'SELECT id_user, state_user FROM users WHERE id_user = ?',
+      `SELECT id_user, state_user, token_user 
+       FROM users 
+       WHERE id_user = ? AND state_user = 1`,
       [decoded.id]
     );
     
-    if (!users.length || users[0].state_user !== 1) {
-      return res.unauthorized('Usuario no válido o inactivo');
+    if (!users.length) {
+      return res.unauthorized('Usuario no válido');
     }
-    
+
     req.user = decoded;
     next();
   } catch (error) {
@@ -39,7 +48,7 @@ module.exports.requireRole = (requiredRoles) => {
     if (!requiredRoles.includes(req.user.rol)) {
       return res.status(403).json({
         success: false,
-        message: 'No tienes permiso para realizar esta acción'
+        message: 'Acceso restringido'
       });
     }
     next();
