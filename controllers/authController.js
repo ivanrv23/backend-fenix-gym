@@ -1,136 +1,84 @@
-const db = require("../config/db");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const User = require('../models/User');
+const { 
+  comparePassword, 
+  generateToken, 
+  successResponse, 
+  errorResponse 
+} = require('../utils/helpers');
 
-exports.login = async (req, res) => {
-  const { user, password } = req.body;
+class AuthController {
+  // Login de usuario
+  static async login(req, res) {
+    try {
+      const { email, password } = req.body;
 
-  try {
-    const [results] = await db.query(
-      `SELECT * FROM users u 
-       INNER JOIN memberships m ON u.id_membership = m.id_membership
-       INNER JOIN customers c ON u.id_customer = c.id_customer 
-       WHERE name_user = ? OR email_user = ?`,
-      [user, user]
-    );
+      // Validar campos requeridos
+      if (!email || !password) {
+        return errorResponse(res, 'Email y contraseña son requeridos', 400);
+      }
 
-    if (results.length === 0) {
-      // Mensaje genérico para no revelar información
-      return res.unauthorized("Credenciales inválidas");
+      // Buscar usuario por email
+      const user = await User.findByEmail(email);
+      
+      if (!user) {
+        return errorResponse(res, 'Credenciales inválidas', 401);
+      }
+
+      // Verificar contraseña
+      const isPasswordValid = await comparePassword(password, user.password_user);
+      
+      if (!isPasswordValid) {
+        return errorResponse(res, 'Credenciales inválidas', 401);
+      }
+
+      // Verificar si la membresía está activa
+      const isMembershipActive = await User.isMembershipActive(user.id_user);
+      
+      if (!isMembershipActive) {
+        return errorResponse(res, 'Membresía expirada. Por favor, renueva tu membresía.', 403);
+      }
+
+      // Generar token
+      const token = generateToken(user.id_user);
+
+      // Actualizar último login
+      await User.updateLoginTime(user.id_user);
+
+      // Preparar respuesta del usuario
+      const userResponse = {
+        id: user.id_user,
+        name: user.name_user,
+        email: user.email_user,
+        photo: user.photo_user,
+        expiration: user.expiration_user,
+        membership: user.id_membership
+      };
+
+      return successResponse(res, {
+        message: 'Login exitoso',
+        user: userResponse,
+        token
+      });
+
+    } catch (error) {
+      console.error('Error en login:', error);
+      return errorResponse(res, 'Error interno del servidor', 500);
     }
-
-    const usuario = results[0];
-
-    if (usuario.state_user !== 1) {
-      return res.unauthorized("Tu cuenta está inactiva. Contacta al administrador.");
-    }
-
-    const passwordMatch = await bcrypt.compare(password, usuario.password_user);
-    if (!passwordMatch) {
-      // Mensaje genérico para no revelar información
-      return res.unauthorized("Credenciales inválidas");
-    }
-
-    // Actualizar último login
-    await db.query("UPDATE users SET login_user = NOW() WHERE id_user = ?", [usuario.id_user]);
-
-    // Generar tokens
-    const accessToken = jwt.sign(
-      { id: usuario.id_user, user: usuario.name_user, rol: usuario.id_membership },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || "15m" }
-    );
-
-    const refreshToken = jwt.sign(
-      { id: usuario.id_user, type: "refresh" },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d" }
-    );
-
-    await db.query("UPDATE users SET token_user = ? WHERE id_user = ?", [refreshToken, usuario.id_user]);
-
-    // Respuesta consistente
-    res.success("Autenticación exitosa", {
-      accessToken,
-      refreshToken,
-      userData: {
-        id: usuario.id_user,
-        user: usuario.name_user,
-        name: usuario.name_customer,
-        lastname: usuario.lastname_customer,
-        email: usuario.email_user,
-        phone: usuario.phone_customer,
-        photo: usuario.photo_user,
-        idmembership: usuario.id_membership,
-        namemembership: usuario.name_membership,
-        statemembership: usuario.state_user === 1 && new Date(usuario.expiration_user) > new Date() 
-                         ? "Activa" : "Inactiva",
-        expirationmembership: usuario.expiration_user,
-        joindate: usuario.created_user,
-        lastlogin: usuario.login_user,
-      },
-    });
-  } catch (error) {
-    console.error("Error en login:", error);
-    res.serverError("Error en el proceso de autenticación");
-  }
-};
-
-exports.refreshToken = async (req, res) => {
-  const { refreshToken } = req.body;
-
-  if (!refreshToken) {
-    return res.badRequest("Token de refresco requerido");
   }
 
-  try {
-    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
-
-    if (decoded.type !== "refresh") {
-      return res.unauthorized("Tipo de token inválido");
+  // Verificar token
+  static async verifyToken(req, res) {
+    try {
+      // El middleware auth ya verificó el token y añadió el usuario a req.user
+      return successResponse(res, {
+        user: req.user,
+        valid: true
+      });
+    } catch (error) {
+      console.error('Error verificando token:', error);
+      return errorResponse(res, 'Error interno del servidor', 500);
     }
-
-    const [users] = await db.query(
-      "SELECT * FROM users WHERE id_user = ? AND token_user = ?",
-      [decoded.id, refreshToken]
-    );
-
-    if (users.length === 0) {
-      return res.unauthorized("Token de refresco inválido");
-    }
-
-    const user = users[0];
-    
-    // Generar nuevo token de acceso
-    const newAccessToken = jwt.sign(
-      { id: user.id_user, user: user.name_user, rol: user.id_membership },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || "15m" }
-    );
-
-    res.success("Token renovado", {
-      accessToken: newAccessToken,
-      refreshToken // Devuelve el mismo refresh token
-    });
-  } catch (error) {
-    if (error.name === "TokenExpiredError") {
-      return res.unauthorized("Token de refresco expirado");
-    }
-    console.error("Error en refreshToken:", error);
-    res.unauthorized("Token de refresco inválido");
   }
-};
+}
 
-exports.logout = async (req, res) => {
-  const userId = req.user.id;
-
-  try {
-    // Eliminar refresh token y limpiar sesión
-    await db.query("UPDATE users SET token_user = NULL, login_user = NULL WHERE id_user = ?", [userId]);
-    
-    res.success("Sesión cerrada exitosamente");
-  } catch (error) {
-    console.error("Error en logout:", error);
-    res.serverError("Error al cerrar sesión");
-  }
-};
+module.exports = AuthController;
