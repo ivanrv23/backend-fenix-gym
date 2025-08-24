@@ -42,11 +42,29 @@ const errorResponse = (res, message, statusCode = 500) => {
   });
 };
 
+// Validar membresia activa
+const validateMembershipActive = (expiracion) => {
+  try {
+    if (!expiracion) return false;
+    // Crear fechas (el formato YYYY-MM-DD es interpretado correctamente por JavaScript)
+    const fechaExpiracion = new Date(expiracion);
+    const fechaActual = new Date();
+    // Ajustar ambas fechas a inicio del día para comparación precisa
+    fechaActual.setHours(0, 0, 0, 0);
+    // Validar que la fecha sea válida y que no haya expirado
+    return !isNaN(fechaExpiracion.getTime()) && fechaExpiracion >= fechaActual;
+  } catch (error) {
+    console.error('Error al validar membresía:', error);
+    return false;
+  }
+};
+
 module.exports = {
   hashPassword,
   comparePassword,
   generateToken,
   verifyToken,
   successResponse,
-  errorResponse
+  errorResponse,
+  validateMembershipActive
 };

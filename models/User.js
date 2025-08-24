@@ -5,16 +5,17 @@ class User {
   static async findByEmail(email) {
     try {
       const query = `
-        SELECT * FROM users 
-        WHERE email_user = ? AND state_user = 1
+        SELECT * FROM users u INNER JOIN customers c
+        ON u.id_customer = c.id_customer
+        WHERE (u.email_user = ? OR u.name_user = ?)
       `;
-      const users = await db.execute(query, [email]);
+      const users = await db.execute(query, [email, email]);
       return users[0] || null;
     } catch (error) {
       throw error;
     }
   }
-  
+
   // Buscar usuario por ID
   static async findById(id) {
     try {
@@ -32,7 +33,7 @@ class User {
       throw error;
     }
   }
-  
+
   // Actualizar último login
   static async updateLoginTime(id) {
     try {
@@ -46,16 +47,16 @@ class User {
       throw error;
     }
   }
-  
+
   // Verificar si la membresía está activa
   static async isMembershipActive(id) {
     try {
       const user = await this.findById(id);
       if (!user) return false;
-      
+
       const expirationDate = new Date(user.expiration_user);
       const today = new Date();
-      
+
       return expirationDate >= today;
     } catch (error) {
       throw error;

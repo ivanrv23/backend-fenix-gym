@@ -16,27 +16,27 @@ const usersData = [
   {
     id_membership: 1,
     id_customer: 1001,
-    name_user: 'Juan Pérez',
-    email_user: 'juan@fenixgym.com',
-    password_user: 'password123',
+    name_user: 'alci',
+    email_user: 'alci@fenixgym.com',
+    password_user: 'Admin123',
     photo_user: '../../assets/users/juan.jpg',
     expiration_user: '2025-12-31'
   },
   {
     id_membership: 2,
     id_customer: 1002,
-    name_user: 'María García',
-    email_user: 'maria@fenixgym.com',
-    password_user: 'clave456',
+    name_user: 'ronal',
+    email_user: 'ronal@fenixgym.com',
+    password_user: 'Admin123',
     photo_user: '../../assets/users/maria.jpg',
     expiration_user: '2025-11-30'
   },
   {
     id_membership: 1,
     id_customer: 1003,
-    name_user: 'Carlos López',
-    email_user: 'carlos@fenixgym.com',
-    password_user: 'gym789',
+    name_user: 'david',
+    email_user: 'david@fenixgym.com',
+    password_user: 'Admin123',
     photo_user: '../../assets/users/carlos.jpg',
     expiration_user: '2025-10-15'
   },
