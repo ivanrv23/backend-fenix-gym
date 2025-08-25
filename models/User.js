@@ -5,9 +5,9 @@ class User {
   static async findByEmail(email) {
     try {
       const query = `
-        SELECT * FROM users u INNER JOIN customers c
-        ON u.id_customer = c.id_customer
-        WHERE (u.email_user = ? OR u.name_user = ?)
+        SELECT * FROM users u INNER JOIN memberships m ON u.id_membership = m.id_membership
+        INNER JOIN customers c ON u.id_customer = c.id_customer
+        WHERE u.email_user = ? OR u.name_user = ?
       `;
       const users = await db.execute(query, [email, email]);
       return users[0] || null;
@@ -48,16 +48,36 @@ class User {
     }
   }
 
-  // Verificar si la membresía está activa
-  static async isMembershipActive(id) {
+  // Actualizar datos de perfil
+  static async updateProfile(iduser, nameuser, emailuser) {
     try {
-      const user = await this.findById(id);
-      if (!user) return false;
+      const query = `
+        UPDATE users 
+        SET name_user = ?, email_user = ?
+        WHERE id_user = ?
+      `;
+      const [result] = await db.execute(query, [nameuser, emailuser, iduser]);
+      return result.affectedRows > 0;
+    } catch (error) {
+      throw error;
+    }
+  }
 
-      const expirationDate = new Date(user.expiration_user);
-      const today = new Date();
-
-      return expirationDate >= today;
+  // Actualizar datos de cliente
+  static async updateCustomer(idcliente, documento, nombres, apellidos,
+      direccion, telefono, nacimiento, peso, estatura, genero) {
+    try {
+      const query = `
+        UPDATE customers 
+        SET document_customer = ?, name_customer = ?, lastname_customer = ?, address_customer = ?,
+        phone_customer = ?, birth_customer = ?, weight_customer = ?, stature_customer = ?, gender_customer = ?
+        WHERE id_customer = ?
+      `;
+      await db.execute(query, [documento, nombres, apellidos,
+      direccion, telefono, nacimiento, peso, estatura, genero, idcliente]);
+      const [result] = await db.execute(query, [documento, nombres, apellidos,
+      direccion, telefono, nacimiento, peso, estatura, genero, idcliente]);
+      return result.affectedRows > 0;
     } catch (error) {
       throw error;
     }

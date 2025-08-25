@@ -10,4 +10,7 @@ router.post('/login', AuthController.login);
 // Verificar token (ruta protegida)
 router.get('/verify', auth, AuthController.verifyToken);
 
+// Actualizar perfil
+router.put('/updateProfile', auth, AuthController.updateProfile);
+
 module.exports = router;

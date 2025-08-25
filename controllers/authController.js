@@ -56,6 +56,8 @@ class AuthController {
         weight_customer: user.weight_customer,
         stature_customer: user.stature_customer,
         gender_customer: user.gender_customer,
+        id_membership: user.id_membership,
+        name_membership: user.name_membership,
         state_membership: isMembershipActive
       };
       return successResponse(res, {
@@ -79,6 +81,96 @@ class AuthController {
       });
     } catch (error) {
       console.error('Error verificando token:', error);
+      return errorResponse(res, 'Error interno del servidor', 500);
+    }
+  }
+
+  static async updateProfile(req, res) {
+    try {
+      const {
+        iduser, nameuser, emailuser, photouser,
+        idcliente, documento, nombres, apellidos,
+        direccion, telefono, nacimiento, peso, estatura, genero
+      } = req.body;
+
+      // Validar campos requeridos
+      if (!iduser || !idcliente) {
+        return errorResponse(res, 'Sin datos', 400);
+      }
+
+      // Verificar que el usuario que está actualizando es el mismo del token
+      if (req.user && req.user.id !== iduser) {
+        return errorResponse(res, 'No tienes permisos para actualizar este perfil', 403);
+      }
+
+      // Verificar que el usuario existe
+      const existingUser = await User.findById(iduser);
+      if (!existingUser) {
+        return errorResponse(res, 'Usuario no encontrado', 404);
+      }
+
+      // Transacción para actualizar ambas tablas
+      try {
+        // Actualizar tabla users
+        if (nameuser || emailuser) {
+          await User.updateProfile(iduser, nameuser, emailuser);
+          console.log('Usuario actualizado en tabla users');
+        }
+
+        // Actualizar tabla customers
+        if (idcliente && (documento || nombres || apellidos || direccion ||
+          telefono || nacimiento || peso || estatura || genero)) {
+          await User.updateCustomer(
+            idcliente, documento, nombres, apellidos,
+            direccion, telefono, nacimiento, peso, estatura, genero
+          );
+          console.log('Cliente actualizado en tabla customers');
+        }
+
+        // Obtener los datos actualizados
+        const updatedUserData = await User.findByIdComplete(iduser);
+
+        if (!updatedUserData) {
+          return errorResponse(res, 'Error al obtener datos actualizados', 500);
+        }
+
+        // Preparar respuesta con datos actualizados
+        const userResponse = {
+          id_user: updatedUserData.id_user,
+          id_customer: updatedUserData.id_customer,
+          name_user: updatedUserData.name_user,
+          email_user: updatedUserData.email_user,
+          photo_user: updatedUserData.photo_user,
+          document_customer: updatedUserData.document_customer,
+          name_customer: updatedUserData.name_customer,
+          lastname_customer: updatedUserData.lastname_customer,
+          address_customer: updatedUserData.address_customer,
+          phone_customer: updatedUserData.phone_customer,
+          birth_customer: updatedUserData.birth_customer,
+          weight_customer: updatedUserData.weight_customer,
+          stature_customer: updatedUserData.stature_customer,
+          gender_customer: updatedUserData.gender_customer,
+          // Incluir otros campos si los necesitas
+          expiration_user: updatedUserData.expiration_user,
+          state_user: updatedUserData.state_user,
+          created_user: updatedUserData.created_user,
+          id_membership: updatedUserData.id_membership
+        };
+
+        console.log('Perfil actualizado exitosamente:', userResponse);
+
+        return successResponse(res, {
+          message: 'Perfil actualizado exitosamente',
+          userData: userResponse
+        });
+
+      } catch (updateError) {
+        console.error('Error en transacción de actualización:', updateError);
+        return errorResponse(res, 'Error al actualizar los datos', 500);
+      }
+
+    } catch (error) {
+      console.error('Error al actualizar perfil:', error);
       return errorResponse(res, 'Error interno del servidor', 500);
     }
   }
