@@ -1,4 +1,4 @@
-const db = require('../config/database');
+const db = require("../config/database");
 
 class User {
   // Buscar usuario por email
@@ -87,36 +87,99 @@ class User {
     }
   }
 
+  // // Actualizar datos de perfil
+  // static async updateProfile(iduser, nameuser, emailuser) {
+  //   try {
+  //     const query = `
+  //       UPDATE users
+  //       SET name_user = ?, email_user = ?
+  //       WHERE id_user = ?
+  //     `;
+  //     const [result] = await db.execute(query, [nameuser, emailuser, iduser]);
+  //     return result.affectedRows > 0;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
+
+  // // Actualizar datos de cliente
+  // static async updateCustomer(idcliente, documento, nombres, apellidos,
+  //   direccion, telefono, nacimiento, peso, estatura, genero) {
+  //   try {
+  //     const query = `
+  //       UPDATE customers
+  //       SET document_customer = ?, name_customer = ?, lastname_customer = ?,
+  //           address_customer = ?, phone_customer = ?, birth_customer = ?,
+  //           weight_customer = ?, stature_customer = ?, gender_customer = ?
+  //       WHERE id_customer = ?
+  //     `;
+  //     const [result] = await db.execute(query, [documento, nombres, apellidos,
+  //       direccion, telefono, nacimiento, peso, estatura, genero, idcliente]);
+  //     return result.affectedRows > 0;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
   // Actualizar datos de perfil
   static async updateProfile(iduser, nameuser, emailuser) {
     try {
       const query = `
-        UPDATE users 
-        SET name_user = ?, email_user = ?
-        WHERE id_user = ?
-      `;
-      const [result] = await db.execute(query, [nameuser, emailuser, iduser]);
+      UPDATE users 
+      SET name_user = ?, email_user = ?
+      WHERE id_user = ?
+    `;
+
+      // REMOVER la desestructuración [result] - usar directamente el resultado
+      const result = await db.execute(query, [nameuser, emailuser, iduser]);
+
+      // Para consultas UPDATE, result es un objeto con affectedRows
       return result.affectedRows > 0;
     } catch (error) {
+      console.error("Error en updateProfile:", error);
       throw error;
     }
   }
 
   // Actualizar datos de cliente
-  static async updateCustomer(idcliente, documento, nombres, apellidos,
-    direccion, telefono, nacimiento, peso, estatura, genero) {
+  static async updateCustomer(
+    idcliente,
+    documento,
+    nombres,
+    apellidos,
+    direccion,
+    telefono,
+    nacimiento,
+    peso,
+    estatura,
+    genero
+  ) {
     try {
       const query = `
-        UPDATE customers 
-        SET document_customer = ?, name_customer = ?, lastname_customer = ?, 
-            address_customer = ?, phone_customer = ?, birth_customer = ?, 
-            weight_customer = ?, stature_customer = ?, gender_customer = ?
-        WHERE id_customer = ?
-      `;
-      const [result] = await db.execute(query, [documento, nombres, apellidos,
-        direccion, telefono, nacimiento, peso, estatura, genero, idcliente]);
+      UPDATE customers 
+      SET document_customer = ?, name_customer = ?, lastname_customer = ?, 
+          address_customer = ?, phone_customer = ?, birth_customer = ?, 
+          weight_customer = ?, stature_customer = ?, gender_customer = ?
+      WHERE id_customer = ?
+    `;
+
+      // REMOVER la desestructuración [result] - usar directamente el resultado
+      const result = await db.execute(query, [
+        documento,
+        nombres,
+        apellidos,
+        direccion,
+        telefono,
+        nacimiento,
+        peso,
+        estatura,
+        genero,
+        idcliente,
+      ]);
+
+      // Para consultas UPDATE, result es un objeto con affectedRows
       return result.affectedRows > 0;
     } catch (error) {
+      console.error("Error en updateCustomer:", error);
       throw error;
     }
   }

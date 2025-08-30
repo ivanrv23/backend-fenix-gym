@@ -81,7 +81,7 @@ class AuthController {
   static async logout(req, res) {
     try {
       // Obtener el ID del usuario del token verificado por el middleware
-      const userId = req.user.id;
+      const userId = req.user.id_user;
 
       // Actualizar token a null en la base de datos
       await User.updateToken(userId, null);
@@ -123,7 +123,7 @@ class AuthController {
       }
 
       // Verificar que el usuario que está actualizando es el mismo del token
-      if (req.user && req.user.id !== iduser) {
+      if (req.user && req.user.id_user !== parseInt(iduser)) {
         return errorResponse(res, 'No tienes permisos para actualizar este perfil', 403);
       }
 
