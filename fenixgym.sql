@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-08-2025 a las 00:21:42
+-- Tiempo de generación: 30-08-2025 a las 23:10:24
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -237,9 +237,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `id_membership`, `id_customer`, `name_user`, `email_user`, `password_user`, `token_user`, `photo_user`, `expiration_user`, `login_user`, `state_user`, `updated_user`, `created_user`) VALUES
-(1, 2, 1, 'alci', 'alci@gmail.com', '$2b$10$uX8AXgQj7po91hLfJMzCA.4t5l9rLIsPNkjVHkQUcGm1Q25aBPri2', NULL, '../../assets/goku.jpg', '2026-08-01', '2025-07-29 23:30:30', 1, '2025-08-02 17:17:52', '2025-07-29 16:32:09'),
-(2, 1, 2, 'ronal', 'ronal@gmail.com', '$2b$10$uX8AXgQj7po91hLfJMzCA.4t5l9rLIsPNkjVHkQUcGm1Q25aBPri2', NULL, '../../assets/goku.jpg', '2025-08-31', NULL, 1, '2025-08-02 17:21:04', '2025-08-02 17:15:31'),
-(3, 1, 3, 'david', 'david@gmail.com', '$2b$10$uX8AXgQj7po91hLfJMzCA.4t5l9rLIsPNkjVHkQUcGm1Q25aBPri2', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3NTQxNzMxODQsImV4cCI6MTc1NDc3Nzk4NH0.aoXzaj2Zyph55zFNLJNkE2TpKHdKKQKmwl6M9Mp38z4', '../../assets/goku.jpg', '2025-08-31', NULL, 1, '2025-08-02 17:21:17', '2025-08-02 17:15:31');
+(1, 1, 1, 'alci', 'alci@fenixgym.com', '$2a$10$SKwb/.gaYHUbNeeFbprVjulMyNa6h2fRxQvjnTMVS2TOlEM8PVIQ2', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU2NTg2MDkwLCJleHAiOjE3NTcxOTA4OTB9.GbWgKFUwKW6wV4kEtYXkAOaghiSF-hrjGqoxmZYPU8I', '../../assets/users/juan.jpg', '2025-12-31', '2025-08-30 15:34:50', 1, '2025-08-30 15:34:50', '2025-08-23 18:16:43'),
+(2, 2, 2, 'ronal', 'ronal@fenixgym.com', '$2a$10$VdPdO0e8A2IYyR9b4S64q.O7zjgHpX.K.TQlTqushkLR/TMh5twY6', NULL, '../../assets/users/maria.jpg', '2025-11-30', NULL, 1, '2025-08-23 18:19:02', '2025-08-23 18:16:43'),
+(3, 1, 3, 'david', 'david@fenixgym.com', '$2a$10$Rd.aixibctSBL6uzEV8nA.tiUQ9sNL.w9iFnMWBpoGfoGOxGdPaHu', NULL, '../../assets/users/carlos.jpg', '2025-10-15', NULL, 1, '2025-08-23 18:18:34', '2025-08-23 18:16:43'),
+(4, 3, 1004, 'Ana Rodríguez', 'ana@fenixgym.com', '$2a$10$Kj7ZgdJeYILzAh6ir1cCkuS6HbQavVJ2lF.AojC95oWYJFwEx4kNK', NULL, '../../assets/users/ana.jpg', '2026-01-15', NULL, 1, '2025-08-23 18:16:44', '2025-08-23 18:16:44'),
+(5, 2, 1005, 'Pedro Martínez', 'pedro@fenixgym.com', '$2a$10$bqZDJBPZhAdsw99y/kHkN.HsHShb3bu6QhVxV5zLiTNbrN4q/KKtG', NULL, '../../assets/users/pedro.jpg', '2025-09-30', NULL, 1, '2025-08-23 18:16:44', '2025-08-23 18:16:44');
 
 --
 -- Índices para tablas volcadas
@@ -403,7 +405,7 @@ ALTER TABLE `routine_muscles`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_user` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
