@@ -7,6 +7,9 @@ const router = express.Router();
 // Login
 router.post('/login', AuthController.login);
 
+// Logout (ruta protegida)
+router.post('/logout', auth, AuthController.logout);
+
 // Verificar token (ruta protegida)
 router.get('/verify', auth, AuthController.verifyToken);
 

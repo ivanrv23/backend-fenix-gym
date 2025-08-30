@@ -24,17 +24,6 @@ const auth = async (req, res, next) => {
         message: 'Token inválido - usuario no existe' 
       });
     }
-
-    // Verificar si la membresía está activa
-    const isMembershipActive = await User.isMembershipActive(user.id_user);
-    
-    if (!isMembershipActive) {
-      return res.status(403).json({ 
-        success: false, 
-        message: 'Membresía expirada' 
-      });
-    }
-
     // Añadir usuario a la request
     req.user = user;
     next();

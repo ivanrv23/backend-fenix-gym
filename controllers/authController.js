@@ -3,7 +3,8 @@ const {
   comparePassword,
   generateToken,
   successResponse,
-  errorResponse, validateMembershipActive
+  errorResponse,
+  validateMembershipActive
 } = require('../utils/helpers');
 
 class AuthController {
@@ -11,15 +12,18 @@ class AuthController {
   static async login(req, res) {
     try {
       const { email, password } = req.body;
+
       // Validar campos requeridos
       if (!email || !password) {
         return errorResponse(res, 'Usuario y contraseña son requeridos', 400);
       }
+
       // Buscar usuario por email
       const user = await User.findByEmail(email);
       if (!user) {
         return errorResponse(res, 'Credenciales inválidas', 401);
       }
+
       // Verificar contraseña
       const isPasswordValid = await comparePassword(password, user.password_user);
       if (!isPasswordValid) {
@@ -29,19 +33,20 @@ class AuthController {
       if (user.state_user !== 1) {
         return errorResponse(res, 'Usuario inhabilitado. Consulte a su proveedor.', 403);
       }
-      // Verificar si la membresía está activa
-      const isMembershipActive = await validateMembershipActive(user.expiration_user);
       // Generar token
       const token = generateToken(user.id_user);
-      // Actualizar último login
+      // Actualizar último login y token en la base de datos
       await User.updateLoginTime(user.id_user);
+      await User.updateToken(user.id_user, token);
+      // Verificar si la membresía está activa
+      const isMembershipActive = await validateMembershipActive(user.expiration_user);
       // Preparar respuesta del usuario
       const userResponse = {
         id_user: user.id_user,
         id_customer: user.id_customer,
         name_user: user.name_user,
         email_user: user.email_user,
-        token_user: user.token_user,
+        token_user: token, // Usar el token generado
         photo_user: user.photo_user,
         expiration_user: user.expiration_user,
         login_user: user.login_user,
@@ -60,6 +65,7 @@ class AuthController {
         name_membership: user.name_membership,
         state_membership: isMembershipActive
       };
+
       return successResponse(res, {
         message: 'Login exitoso',
         user: userResponse,
@@ -67,6 +73,24 @@ class AuthController {
       });
     } catch (error) {
       console.error('Error en login:', error);
+      return errorResponse(res, 'Error interno del servidor', 500);
+    }
+  }
+
+  // Logout de usuario
+  static async logout(req, res) {
+    try {
+      // Obtener el ID del usuario del token verificado por el middleware
+      const userId = req.user.id;
+
+      // Actualizar token a null en la base de datos
+      await User.updateToken(userId, null);
+
+      return successResponse(res, {
+        message: 'Logout exitoso'
+      });
+    } catch (error) {
+      console.error('Error en logout:', error);
       return errorResponse(res, 'Error interno del servidor', 500);
     }
   }

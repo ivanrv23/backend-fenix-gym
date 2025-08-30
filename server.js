@@ -16,8 +16,8 @@ app.use('/api/auth', authRoutes);
 
 // Ruta de salud
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    success: true, 
+  res.json({
+    success: true,
     message: 'Servidor de FenixGym funcionando correctamente',
     timestamp: new Date().toISOString()
   });
