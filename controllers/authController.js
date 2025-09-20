@@ -8,16 +8,15 @@ const {
 } = require('../utils/helpers');
 
 class AuthController {
+
   // Login de usuario
   static async login(req, res) {
     try {
       const { email, password } = req.body;
-
       // Validar campos requeridos
       if (!email || !password) {
         return errorResponse(res, 'Usuario y contraseña son requeridos', 400);
       }
-
       // Buscar usuario por email
       const user = await User.findByEmail(email);
       if (!user) {
@@ -65,7 +64,6 @@ class AuthController {
         name_membership: user.name_membership,
         state_membership: isMembershipActive
       };
-
       return successResponse(res, {
         message: 'Login exitoso',
         user: userResponse,
@@ -82,10 +80,8 @@ class AuthController {
     try {
       // Obtener el ID del usuario del token verificado por el middleware
       const userId = req.user.id_user;
-
       // Actualizar token a null en la base de datos
       await User.updateToken(userId, null);
-
       return successResponse(res, {
         message: 'Logout exitoso'
       });
@@ -132,8 +128,7 @@ class AuthController {
       if (!existingUser) {
         return errorResponse(res, 'Usuario no encontrado', 404);
       }
-
-      // Transacción para actualizar ambas tablas
+      
       try {
         // Actualizar tabla users
         if (nameuser || emailuser) {
@@ -157,14 +152,21 @@ class AuthController {
         if (!updatedUserData) {
           return errorResponse(res, 'Error al obtener datos actualizados', 500);
         }
-
+        // Generar token
+        const token = generateToken(updatedUserData.id_user);
+        const isMembershipActive = await validateMembershipActive(updatedUserData.expiration_user);
         // Preparar respuesta con datos actualizados
         const userResponse = {
           id_user: updatedUserData.id_user,
           id_customer: updatedUserData.id_customer,
           name_user: updatedUserData.name_user,
           email_user: updatedUserData.email_user,
+          token_user: token, // Usar el token generado
           photo_user: updatedUserData.photo_user,
+          expiration_user: updatedUserData.expiration_user,
+          login_user: updatedUserData.login_user,
+          state_user: updatedUserData.state_user,
+          created_user: updatedUserData.created_user,
           document_customer: updatedUserData.document_customer,
           name_customer: updatedUserData.name_customer,
           lastname_customer: updatedUserData.lastname_customer,
@@ -174,25 +176,18 @@ class AuthController {
           weight_customer: updatedUserData.weight_customer,
           stature_customer: updatedUserData.stature_customer,
           gender_customer: updatedUserData.gender_customer,
-          // Incluir otros campos si los necesitas
-          expiration_user: updatedUserData.expiration_user,
-          state_user: updatedUserData.state_user,
-          created_user: updatedUserData.created_user,
-          id_membership: updatedUserData.id_membership
+          id_membership: updatedUserData.id_membership,
+          name_membership: updatedUserData.name_membership,
+          state_membership: isMembershipActive
         };
-
-        console.log('Perfil actualizado exitosamente:', userResponse);
-
         return successResponse(res, {
           message: 'Perfil actualizado exitosamente',
           userData: userResponse
         });
-
       } catch (updateError) {
         console.error('Error en transacción de actualización:', updateError);
         return errorResponse(res, 'Error al actualizar los datos', 500);
       }
-
     } catch (error) {
       console.error('Error al actualizar perfil:', error);
       return errorResponse(res, 'Error interno del servidor', 500);

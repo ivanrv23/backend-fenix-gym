@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
+const rutinaRoutes = require('./routes/rutina');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,6 +14,8 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/auth', authRoutes);
+
+app.use('/api/rutina', rutinaRoutes);
 
 // Ruta de salud
 app.get('/api/health', (req, res) => {

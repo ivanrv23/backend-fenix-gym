@@ -19,9 +19,9 @@ const auth = async (req, res, next) => {
     const user = await User.findById(decoded.id);
     
     if (!user) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'Token inválido - usuario no existe' 
+      return res.status(401).json({
+        success: false,
+        message: 'Token inválido - usuario no existe'
       });
     }
     // Añadir usuario a la request
@@ -29,9 +29,9 @@ const auth = async (req, res, next) => {
     next();
   } catch (error) {
     console.error('Error en middleware de autenticación:', error);
-    return res.status(401).json({ 
-      success: false, 
-      message: 'Token inválido' 
+    return res.status(401).json({
+      success: false,
+      message: 'Token inválido'
     });
   }
 };
