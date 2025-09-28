@@ -5,7 +5,7 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 // crear rutina
-router.post('/create', RutinaController.createRutina);
+router.post('/create', auth, RutinaController.createRutina);
 
 // // Logout (ruta protegida)
 // router.post('/logout', auth, RutinaController.logout);
