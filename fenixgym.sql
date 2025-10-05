@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-08-2025 a las 23:10:24
+-- Tiempo de generación: 05-10-2025 a las 02:51:30
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -46,7 +46,7 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id_customer`, `document_customer`, `name_customer`, `lastname_customer`, `address_customer`, `phone_customer`, `birth_customer`, `weight_customer`, `stature_customer`, `gender_customer`, `created_customer`) VALUES
-(1, '00000000', 'Alciviades', 'Cueva', 'Av. De Prueba 675, Cajamarca', '976014890', '2020-06-01', 68, 163, 1, '2025-08-02 11:48:26'),
+(1, '73441267', 'Alciviades', 'Cueva', 'Av. De Prueba 675, Cajamarca', '976014890', '2020-06-01', 68, 163, 1, '2025-08-02 11:48:26'),
 (2, '11111111', 'Ronal', 'Ramos', NULL, NULL, '2005-08-01', 0, 0, 1, '2025-08-02 17:12:41'),
 (3, '22222222', 'David', 'López', NULL, NULL, '2006-08-01', 0, 0, 1, '2025-08-02 17:12:41');
 
@@ -63,6 +63,19 @@ CREATE TABLE `days` (
   `state_day` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `days`
+--
+
+INSERT INTO `days` (`id_day`, `number_day`, `description_day`, `state_day`) VALUES
+(1, 1, 'Para principiantes/salud general', 1),
+(2, 2, 'Para nivel principiante serio', 1),
+(3, 3, 'Para intermedios', 1),
+(4, 4, 'Para avanzados', 1),
+(5, 5, 'Para avanzados nivel serio', 1),
+(6, 6, 'Para competitivos', 1),
+(7, 7, 'Solo para atletas', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -75,6 +88,17 @@ CREATE TABLE `durations` (
   `description_duration` text DEFAULT NULL,
   `state_duration` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `durations`
+--
+
+INSERT INTO `durations` (`id_duration`, `minutes_duration`, `description_duration`, `state_duration`) VALUES
+(1, 30, 'Para principiantes ocupados', 1),
+(2, 45, 'Para principiantes', 1),
+(3, 60, 'Para intermedios', 1),
+(4, 90, 'Para avanzados', 1),
+(5, 120, 'Para avanzados y atletas', 1);
 
 -- --------------------------------------------------------
 
@@ -104,6 +128,17 @@ CREATE TABLE `goals` (
   `state_goal` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `goals`
+--
+
+INSERT INTO `goals` (`id_goal`, `name_goal`, `description_goal`, `state_goal`) VALUES
+(1, 'Perder Peso', 'Bajar el porcentaje de grasa', 1),
+(2, 'Ganar Músculo', 'Hipertrofia muscular', 1),
+(3, 'Aumentar Fuerza', 'Rendimiento en levantamientos', 1),
+(4, 'Resistencia', 'Potencia, agilidad, funcionalidad', 1),
+(5, 'Salud General', 'Bienestar físico', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -116,6 +151,17 @@ CREATE TABLE `levels` (
   `description_level` text DEFAULT NULL,
   `state_level` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `levels`
+--
+
+INSERT INTO `levels` (`id_level`, `name_level`, `description_level`, `state_level`) VALUES
+(1, 'Principiante', '0 - 6 meses', 1),
+(2, 'Intermedio', '6 - 24 meses', 1),
+(3, 'Avanzado', '2 - 5 años', 1),
+(4, 'Competitivo', '5+ años', 1),
+(5, 'Recreativo', 'Variable', 1);
 
 -- --------------------------------------------------------
 
@@ -165,6 +211,28 @@ CREATE TABLE `muscles` (
   `description_muscle` text DEFAULT NULL,
   `state_muscle` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `muscles`
+--
+
+INSERT INTO `muscles` (`id_muscle`, `name_muscle`, `description_muscle`, `state_muscle`) VALUES
+(1, 'Pectorales', 'Músculos del pecho en el torso anterior', 1),
+(2, 'Dorsales', 'Músculos de la espalda ancha en el torso posterior', 1),
+(3, 'Trapecio y romboides', 'Músculos de la espalda media', 1),
+(4, 'Deltoides', 'Músculos de los hombros en el torso superior', 1),
+(5, 'Glúteos', 'Músculos de la zona de la cadera', 1),
+(6, 'Cuádriceps', 'Muslos anteriores', 1),
+(7, 'Isquiotibiales', 'Femorales en la zona de los muslos posteriores', 1),
+(8, 'Core', 'Abdominales y lumbares en la zona del tronco', 1),
+(9, 'Bíceps', 'Brazo anterior', 1),
+(10, 'Tríceps', 'Brazo posterior', 1),
+(11, 'Trapecio superior', 'Cuello y hombros', 1),
+(12, 'Erectores espinales', 'Espalda baja', 1),
+(13, 'Aductores y abductores', 'Interior y exterior de piernas', 1),
+(14, 'Oblicuos', 'Laterales del abdomen', 1),
+(15, 'Antebrazos', 'Brazos inferiores', 1),
+(16, 'Gemelos', 'Pantorrillas en la perna inferior', 1);
 
 -- --------------------------------------------------------
 
@@ -237,9 +305,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `id_membership`, `id_customer`, `name_user`, `email_user`, `password_user`, `token_user`, `photo_user`, `expiration_user`, `login_user`, `state_user`, `updated_user`, `created_user`) VALUES
-(1, 1, 1, 'alci', 'alci@fenixgym.com', '$2a$10$SKwb/.gaYHUbNeeFbprVjulMyNa6h2fRxQvjnTMVS2TOlEM8PVIQ2', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU2NTg2MDkwLCJleHAiOjE3NTcxOTA4OTB9.GbWgKFUwKW6wV4kEtYXkAOaghiSF-hrjGqoxmZYPU8I', '../../assets/users/juan.jpg', '2025-12-31', '2025-08-30 15:34:50', 1, '2025-08-30 15:34:50', '2025-08-23 18:16:43'),
-(2, 2, 2, 'ronal', 'ronal@fenixgym.com', '$2a$10$VdPdO0e8A2IYyR9b4S64q.O7zjgHpX.K.TQlTqushkLR/TMh5twY6', NULL, '../../assets/users/maria.jpg', '2025-11-30', NULL, 1, '2025-08-23 18:19:02', '2025-08-23 18:16:43'),
-(3, 1, 3, 'david', 'david@fenixgym.com', '$2a$10$Rd.aixibctSBL6uzEV8nA.tiUQ9sNL.w9iFnMWBpoGfoGOxGdPaHu', NULL, '../../assets/users/carlos.jpg', '2025-10-15', NULL, 1, '2025-08-23 18:18:34', '2025-08-23 18:16:43'),
+(1, 1, 1, 'alci', 'alci@fenixgym.com', '$2a$10$SKwb/.gaYHUbNeeFbprVjulMyNa6h2fRxQvjnTMVS2TOlEM8PVIQ2', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU5NjIyMDY3LCJleHAiOjE3NjAyMjY4Njd9.E6NQRBfKufKVehWYr-wVr7E0ofDDQjamwg9SSZEx0vY', '../../assets/users/alci.jpg', '2025-12-31', '2025-10-04 18:54:27', 1, '2025-10-04 18:54:27', '2025-08-23 18:16:43'),
+(2, 2, 2, 'ronal', 'ronal@fenixgym.com', '$2a$10$VdPdO0e8A2IYyR9b4S64q.O7zjgHpX.K.TQlTqushkLR/TMh5twY6', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzU4NDE0MTgzLCJleHAiOjE3NTkwMTg5ODN9.1SXjfPFIzvGo2vXeCsIZW701LiB-5ArQCgp5VsGXkgQ', '../../assets/users/default.png', '2025-11-30', '2025-09-20 19:23:03', 1, '2025-09-20 19:23:03', '2025-08-23 18:16:43'),
+(3, 1, 3, 'david', 'david@fenixgym.com', '$2a$10$Rd.aixibctSBL6uzEV8nA.tiUQ9sNL.w9iFnMWBpoGfoGOxGdPaHu', NULL, '../../assets/users/default.png', '2025-10-15', NULL, 1, '2025-09-20 15:30:38', '2025-08-23 18:16:43'),
 (4, 3, 1004, 'Ana Rodríguez', 'ana@fenixgym.com', '$2a$10$Kj7ZgdJeYILzAh6ir1cCkuS6HbQavVJ2lF.AojC95oWYJFwEx4kNK', NULL, '../../assets/users/ana.jpg', '2026-01-15', NULL, 1, '2025-08-23 18:16:44', '2025-08-23 18:16:44'),
 (5, 2, 1005, 'Pedro Martínez', 'pedro@fenixgym.com', '$2a$10$bqZDJBPZhAdsw99y/kHkN.HsHShb3bu6QhVxV5zLiTNbrN4q/KKtG', NULL, '../../assets/users/pedro.jpg', '2025-09-30', NULL, 1, '2025-08-23 18:16:44', '2025-08-23 18:16:44');
 
@@ -339,13 +407,13 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT de la tabla `days`
 --
 ALTER TABLE `days`
-  MODIFY `id_day` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_day` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `durations`
 --
 ALTER TABLE `durations`
-  MODIFY `id_duration` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_duration` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `exercises`
@@ -357,13 +425,13 @@ ALTER TABLE `exercises`
 -- AUTO_INCREMENT de la tabla `goals`
 --
 ALTER TABLE `goals`
-  MODIFY `id_goal` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_goal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `id_level` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_level` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `machines`
@@ -381,7 +449,7 @@ ALTER TABLE `memberships`
 -- AUTO_INCREMENT de la tabla `muscles`
 --
 ALTER TABLE `muscles`
-  MODIFY `id_muscle` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_muscle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `routines`
