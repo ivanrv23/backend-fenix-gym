@@ -10,14 +10,17 @@ router.get('/experiencie', auth, RutinaController.getNivelesExperiencia);
 // Traer lista de metas
 router.get('/goal', auth, RutinaController.getObjetivos);
 
+// Traer lista de dias
+router.get('/day', auth, RutinaController.getDiasSemana);
+
+// Traer lista de duración en minutos
+router.get('/duration', auth, RutinaController.getMinutosDuracion);
+
 // crear rutina
 router.post('/create', auth, RutinaController.createRutina);
 
-// // Logout (ruta protegida)
-// router.post('/logout', auth, RutinaController.logout);
-
-// // Verificar token (ruta protegida)
-// router.get('/verify', auth, RutinaController.verifyToken);
+// Traer lista de rutinas por usuario
+router.get('/lista', auth, RutinaController.getRutinasUsuario);
 
 // // Actualizar perfil
 // router.put('/updateProfile', auth, RutinaController.updateProfile);
