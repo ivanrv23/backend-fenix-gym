@@ -1,11 +1,7 @@
 const User = require('../models/User');
-const {
-  comparePassword,
-  generateToken,
-  successResponse,
-  errorResponse,
-  validateMembershipActive
-} = require('../utils/helpers');
+const bcrypt = require('bcryptjs');
+const { comparePassword, generateToken, successResponse, errorResponse,
+  validateMembershipActive } = require('../utils/helpers');
 
 class AuthController {
 
@@ -30,7 +26,7 @@ class AuthController {
       }
       // Verificar si la el usuario está activo
       if (user.state_user !== 1) {
-        return errorResponse(res, 'Usuario inhabilitado. Consulte a su proveedor.', 403);
+        return errorResponse(res, 'Cuenta eliminada. Consulte a su proveedor.', 403);
       }
       // Generar token
       const token = generateToken(user.id_user);
@@ -128,11 +124,11 @@ class AuthController {
       if (!existingUser) {
         return errorResponse(res, 'Usuario no encontrado', 404);
       }
-      
+
       try {
         // Actualizar tabla users
-        if (nameuser || emailuser) {
-          await User.updateProfile(iduser, nameuser, emailuser);
+        if (nameuser || emailuser || photouser) {
+          await User.updateProfile(iduser, nameuser, emailuser, photouser);
           console.log('Usuario actualizado en tabla users');
         }
 
@@ -193,6 +189,222 @@ class AuthController {
       return errorResponse(res, 'Error interno del servidor', 500);
     }
   }
+
+  static async updatePassword(req, res) {
+    try {
+      const { iduser, currentPassword, newPassword } = req.body;
+      // Validar campos requeridos
+      if (!iduser || !currentPassword || !newPassword) {
+        return errorResponse(res, 'Sin datos', 400);
+      }
+      // Verificar que el usuario que está actualizando es el mismo del token
+      if (req.user && req.user.id_user !== parseInt(iduser)) {
+        return errorResponse(res, 'No tienes permisos para cambiar contraseña', 403);
+      }
+      // Verificar que la contraseña actual es correcta
+      const existingUser = await User.findById(iduser);
+      if (existingUser) {
+        console.log(existingUser);
+        const isPasswordValid = await comparePassword(currentPassword, existingUser.password_user);
+        if (!isPasswordValid) {
+          return errorResponse(res, 'La contraseña actual no es la misma', 401);
+        }
+      } else {
+        return errorResponse(res, 'No se pudo verificar la contraseña.', 404);
+      }
+      try {
+        // Actualizar tabla users
+        const newHashedPass = await bcrypt.hash(newPassword, 10);
+        const updated = await User.updatePassword(iduser, newHashedPass);
+        if (!updated) {
+          return errorResponse(res, 'Error al cambia de contraseña', 500);
+        }
+        // Obtener los datos actualizados
+        const updatedUserData = await User.findByIdComplete(iduser);
+        if (!updatedUserData) {
+          return errorResponse(res, 'Error al obtener datos actualizados', 500);
+        }
+        // Generar token
+        const token = generateToken(updatedUserData.id_user);
+        const isMembershipActive = await validateMembershipActive(updatedUserData.expiration_user);
+        // Preparar respuesta con datos actualizados
+        const userResponse = {
+          id_user: updatedUserData.id_user,
+          id_customer: updatedUserData.id_customer,
+          name_user: updatedUserData.name_user,
+          email_user: updatedUserData.email_user,
+          token_user: token, // Usar el token generado
+          photo_user: updatedUserData.photo_user,
+          expiration_user: updatedUserData.expiration_user,
+          login_user: updatedUserData.login_user,
+          state_user: updatedUserData.state_user,
+          created_user: updatedUserData.created_user,
+          document_customer: updatedUserData.document_customer,
+          name_customer: updatedUserData.name_customer,
+          lastname_customer: updatedUserData.lastname_customer,
+          address_customer: updatedUserData.address_customer,
+          phone_customer: updatedUserData.phone_customer,
+          birth_customer: updatedUserData.birth_customer,
+          weight_customer: updatedUserData.weight_customer,
+          stature_customer: updatedUserData.stature_customer,
+          gender_customer: updatedUserData.gender_customer,
+          id_membership: updatedUserData.id_membership,
+          name_membership: updatedUserData.name_membership,
+          state_membership: isMembershipActive
+        };
+        return successResponse(res, {
+          message: 'Contraseña actualizada exitosamente',
+          userData: userResponse
+        });
+      } catch (updateError) {
+        console.error('Error al actualizar pass:', updateError);
+        return errorResponse(res, 'Error al actualizar pass', 500);
+      }
+    } catch (error) {
+      console.error('Error al actualizar pass:', error);
+      return errorResponse(res, 'Error interno del servidor', 500);
+    }
+  }
+
+  static async deleteAccount(req, res) {
+    try {
+      const { iduser, password } = req.body;
+      // Validar campos requeridos
+      if (!iduser || !password) {
+        return errorResponse(res, 'Sin datos', 400);
+      }
+      // Verificar que el usuario que está actualizando es el mismo del token
+      if (req.user && req.user.id_user !== parseInt(iduser)) {
+        return errorResponse(res, 'No tienes permisos para eliminar cuenta', 403);
+      }
+      // Verificar que la contraseña actual es correcta
+      const existingUser = await User.findById(iduser);
+      if (existingUser) {
+        console.log(existingUser);
+        const isPasswordValid = await comparePassword(password, existingUser.password_user);
+        if (!isPasswordValid) {
+          return errorResponse(res, 'La contraseña actual no es la misma', 401);
+        }
+      } else {
+        return errorResponse(res, 'No se pudo verificar la contraseña.', 404);
+      }
+      try {
+        // Actualizar tabla users
+        const deleted = await User.deleteAccount(iduser);
+        if (!deleted) {
+          return errorResponse(res, 'Error al eliminar cuenta', 500);
+        }
+        return successResponse(res, {
+          message: 'Cuenta eliminada exitosamente',
+          success: deleted
+        });
+      } catch (updateError) {
+        console.error('Error eliminado cuenta:', updateError);
+        return errorResponse(res, 'Error eliminado cuenta', 500);
+      }
+    } catch (error) {
+      console.error('Error eliminado cuenta:', error);
+      return errorResponse(res, 'Error interno del servidor', 500);
+    }
+  }
+
+  static async applyPromotionCode(req, res) {
+    try {
+      const { iduser, promoCode } = req.body;
+
+      // Validar campos requeridos
+      if (!iduser || !promoCode) {
+        return errorResponse(res, 'Sin datos', 400);
+      }
+
+      // Verificar que el usuario que está actualizando es el mismo del token
+      if (req.user && req.user.id_user !== parseInt(iduser)) {
+        return errorResponse(res, 'No tienes permiso para aplicar el código', 403);
+      }
+
+      // Verificar que el usuario existe
+      const existingUser = await User.findById(iduser);
+      if (!existingUser) {
+        return errorResponse(res, 'Usuario no encontrado', 404);
+      }
+
+      try {
+        // Verificar que el código existe
+        const existingCode = await User.findPromotionCode(promoCode);
+        console.log('Codes: ', existingCode);
+        if (existingCode && existingCode.id_membership && existingUser.expiration_user) {
+          const dias = existingCode.days_membership;
+          const fechafin = new Date(existingUser.expiration_user); // Convertir string DATE a objeto Date
+          const hoy = new Date();
+          // Limpiar las horas para comparar solo fechas
+          hoy.setHours(0, 0, 0, 0);
+          fechafin.setHours(0, 0, 0, 0);
+          let nuevafechafin;
+          // Validar si fechafin es mayor a hoy
+          if (fechafin > hoy) {
+            // Si la membresía aún está vigente, sumar días a la fecha de expiración actual
+            nuevafechafin = new Date(fechafin);
+            nuevafechafin.setDate(nuevafechafin.getDate() + dias);
+          } else {
+            // Si la membresía ya expiró, sumar días desde hoy
+            nuevafechafin = new Date(hoy);
+            nuevafechafin.setDate(nuevafechafin.getDate() + dias);
+          }
+
+          // Convertir a formato DATE para la base de datos (YYYY-MM-DD)
+          const fechafinFormatted = nuevafechafin.toISOString().split('T')[0];
+
+          const updated = await User.applyPromotionCode(iduser, existingCode.id_membership, fechafinFormatted);
+          console.log('Usuario actualizado en tabla users');
+          // Obtener los datos actualizados
+          const updatedUserData = await User.findByIdComplete(iduser);
+
+          if (!updatedUserData) {
+            return errorResponse(res, 'Error al obtener datos actualizados', 500);
+          }
+          // Generar token
+          const token = generateToken(updatedUserData.id_user);
+          const isMembershipActive = await validateMembershipActive(updatedUserData.expiration_user);
+          // Preparar respuesta con datos actualizados
+          const userResponse = {
+            id_user: updatedUserData.id_user,
+            id_customer: updatedUserData.id_customer,
+            name_user: updatedUserData.name_user,
+            email_user: updatedUserData.email_user,
+            token_user: token, // Usar el token generado
+            photo_user: updatedUserData.photo_user,
+            expiration_user: updatedUserData.expiration_user,
+            login_user: updatedUserData.login_user,
+            state_user: updatedUserData.state_user,
+            created_user: updatedUserData.created_user,
+            document_customer: updatedUserData.document_customer,
+            name_customer: updatedUserData.name_customer,
+            lastname_customer: updatedUserData.lastname_customer,
+            address_customer: updatedUserData.address_customer,
+            phone_customer: updatedUserData.phone_customer,
+            birth_customer: updatedUserData.birth_customer,
+            weight_customer: updatedUserData.weight_customer,
+            stature_customer: updatedUserData.stature_customer,
+            gender_customer: updatedUserData.gender_customer,
+            id_membership: updatedUserData.id_membership,
+            name_membership: updatedUserData.name_membership,
+            state_membership: isMembershipActive
+          };
+          return successResponse(res, {
+            message: 'Perfil actualizado exitosamente',
+            userData: userResponse
+          });
+        }
+      } catch (updateError) {
+        console.error('Error en transacción de actualización:', updateError);
+        return errorResponse(res, 'Error al actualizar los datos', 500);
+      }
+    } catch (error) {
+      console.error('Error al actualizar perfil:', error);
+      return errorResponse(res, 'Error interno del servidor', 500);
+    }
+  }
+
 }
 
 module.exports = AuthController;

@@ -23,7 +23,7 @@ class User {
       const query = `
         SELECT
           id_user, id_membership, id_customer,
-          name_user, email_user, photo_user,
+          name_user, email_user, password_user, photo_user,
           expiration_user, login_user, created_user
         FROM users
         WHERE id_user = ? AND state_user = 1
@@ -80,52 +80,15 @@ class User {
     }
   }
 
-  // // Actualizar datos de perfil
-  // static async updateProfile(iduser, nameuser, emailuser) {
-  //   try {
-  //     const query = `
-  //       UPDATE users
-  //       SET name_user = ?, email_user = ?
-  //       WHERE id_user = ?
-  //     `;
-  //     const [result] = await db.execute(query, [nameuser, emailuser, iduser]);
-  //     return result.affectedRows > 0;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
-
-  // // Actualizar datos de cliente
-  // static async updateCustomer(idcliente, documento, nombres, apellidos,
-  //   direccion, telefono, nacimiento, peso, estatura, genero) {
-  //   try {
-  //     const query = `
-  //       UPDATE customers
-  //       SET document_customer = ?, name_customer = ?, lastname_customer = ?,
-  //           address_customer = ?, phone_customer = ?, birth_customer = ?,
-  //           weight_customer = ?, stature_customer = ?, gender_customer = ?
-  //       WHERE id_customer = ?
-  //     `;
-  //     const [result] = await db.execute(query, [documento, nombres, apellidos,
-  //       direccion, telefono, nacimiento, peso, estatura, genero, idcliente]);
-  //     return result.affectedRows > 0;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
   // Actualizar datos de perfil
-  static async updateProfile(iduser, nameuser, emailuser) {
+  static async updateProfile(iduser, nameuser, emailuser, photouser) {
     try {
       const query = `
       UPDATE users 
-      SET name_user = ?, email_user = ?
+      SET name_user = ?, email_user = ?, photo_user = ?
       WHERE id_user = ?
     `;
-
-      // REMOVER la desestructuración [result] - usar directamente el resultado
-      const result = await db.execute(query, [nameuser, emailuser, iduser]);
-
-      // Para consultas UPDATE, result es un objeto con affectedRows
+      const result = await db.execute(query, [nameuser, emailuser, photouser, iduser]);
       return result.affectedRows > 0;
     } catch (error) {
       console.error("Error en updateProfile:", error);
@@ -134,18 +97,8 @@ class User {
   }
 
   // Actualizar datos de cliente
-  static async updateCustomer(
-    idcliente,
-    documento,
-    nombres,
-    apellidos,
-    direccion,
-    telefono,
-    nacimiento,
-    peso,
-    estatura,
-    genero
-  ) {
+  static async updateCustomer(idcliente, documento, nombres, apellidos, direccion, telefono,
+    nacimiento, peso, estatura, genero) {
     try {
       const query = `
       UPDATE customers 
@@ -154,25 +107,68 @@ class User {
           weight_customer = ?, stature_customer = ?, gender_customer = ?
       WHERE id_customer = ?
     `;
-
-      // REMOVER la desestructuración [result] - usar directamente el resultado
-      const result = await db.execute(query, [
-        documento,
-        nombres,
-        apellidos,
-        direccion,
-        telefono,
-        nacimiento,
-        peso,
-        estatura,
-        genero,
-        idcliente,
-      ]);
-
-      // Para consultas UPDATE, result es un objeto con affectedRows
+      const result = await db.execute(query, [documento, nombres, apellidos, direccion, telefono,
+        nacimiento, peso, estatura, genero, idcliente]);
       return result.affectedRows > 0;
     } catch (error) {
       console.error("Error en updateCustomer:", error);
+      throw error;
+    }
+  }
+
+  // Actualizar contraseña
+  static async updatePassword(iduser, contraseña) {
+    try {
+      const query = `
+        UPDATE users SET password_user = ? WHERE id_user = ?
+      `;
+      const result = await db.execute(query, [contraseña, iduser]);
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error("Error en updatePassword:", error);
+      throw error;
+    }
+  }
+
+  // Eliminar cuenta
+  static async deleteAccount(iduser) {
+    try {
+      const query = `
+        UPDATE users SET state_user = 0 WHERE id_user = ?
+      `;
+      const result = await db.execute(query, [iduser]);
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error("Error en deleteAccount:", error);
+      throw error;
+    }
+  }
+
+  // Buscar código promocional
+  static async findPromotionCode(code) {
+    try {
+      const query = `
+        SELECT * FROM promotions p INNER JOIN memberships m
+        ON p.id_membership = m.id_membership
+        WHERE p.code_promotion = ? AND p.state_promotion = 1
+      `;
+      const codes = await db.execute(query, [code]);
+      return codes || null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Actualizar usuario con código promocional
+  static async applyPromotionCode(iduser, idmembership, fechafin) {
+    try {
+      const query = `
+        UPDATE users SET id_membership = ?, expiration_user = ? WHERE id_user = ?
+      `;
+      const result = await db.execute(query, [idmembership, fechafin, iduser]);
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error("Error en applyPromotionCode:", error);
       throw error;
     }
   }

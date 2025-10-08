@@ -16,4 +16,13 @@ router.get('/verify', auth, AuthController.verifyToken);
 // Actualizar perfil
 router.put('/updateProfile', auth, AuthController.updateProfile);
 
+// Actualizar contraseña
+router.put('/updatePassword', auth, AuthController.updatePassword);
+
+// Eliminar cuenta
+router.put('/delete', auth, AuthController.deleteAccount);
+
+// Aplicar código promocional
+router.put('/code', auth, AuthController.applyPromotionCode);
+
 module.exports = router;
