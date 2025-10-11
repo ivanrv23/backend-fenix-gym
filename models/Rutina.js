@@ -75,7 +75,9 @@ class Rutina {
   // Obtener lista de rutinas por usuario
   static async getRutinasUsuario(idusuario) {
     try {
-      const query = `SELECT * FROM routines WHERE id_user = ?`;
+      const query = `SELECT * FROM routines r INNER JOIN levels l ON r.id_level = l.id_level
+      INNER JOIN goals g ON r.id_goal = g.id_goal INNER JOIN days d
+      ON r.id_day = d.id_day WHERE r.id_user = ?`;
       const rows = await db.execute(query, [idusuario]);
       return rows;
     } catch (error) {
