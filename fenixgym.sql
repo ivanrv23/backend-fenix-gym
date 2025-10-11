@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-10-2025 a las 02:51:30
+-- Tiempo de generación: 11-10-2025 a las 22:33:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -47,7 +47,7 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`id_customer`, `document_customer`, `name_customer`, `lastname_customer`, `address_customer`, `phone_customer`, `birth_customer`, `weight_customer`, `stature_customer`, `gender_customer`, `created_customer`) VALUES
 (1, '73441267', 'Alciviades', 'Cueva', 'Av. De Prueba 675, Cajamarca', '976014890', '2020-06-01', 68, 163, 1, '2025-08-02 11:48:26'),
-(2, '11111111', 'Ronal', 'Ramos', NULL, NULL, '2005-08-01', 0, 0, 1, '2025-08-02 17:12:41'),
+(2, '11111111', 'Ronal', 'Ramos', 'Hh', '976014890', '2005-08-01', 60, 160, 1, '2025-08-02 17:12:41'),
 (3, '22222222', 'David', 'López', NULL, NULL, '2006-08-01', 0, 0, 1, '2025-08-02 17:12:41');
 
 -- --------------------------------------------------------
@@ -237,6 +237,19 @@ INSERT INTO `muscles` (`id_muscle`, `name_muscle`, `description_muscle`, `state_
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `promotions`
+--
+
+CREATE TABLE `promotions` (
+  `id_promotion` bigint(20) NOT NULL,
+  `id_membership` int(11) NOT NULL,
+  `code_promotion` varchar(20) NOT NULL,
+  `state_promotion` int(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `routines`
 --
 
@@ -249,6 +262,14 @@ CREATE TABLE `routines` (
   `id_duration` int(11) NOT NULL,
   `date_routine` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `routines`
+--
+
+INSERT INTO `routines` (`id_routine`, `id_user`, `id_level`, `id_goal`, `id_day`, `id_duration`, `date_routine`) VALUES
+(1, 1, 1, 4, 5, 3, '2025-10-05'),
+(2, 1, 5, 5, 3, 1, '2025-10-11');
 
 -- --------------------------------------------------------
 
@@ -305,8 +326,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `id_membership`, `id_customer`, `name_user`, `email_user`, `password_user`, `token_user`, `photo_user`, `expiration_user`, `login_user`, `state_user`, `updated_user`, `created_user`) VALUES
-(1, 1, 1, 'alci', 'alci@fenixgym.com', '$2a$10$SKwb/.gaYHUbNeeFbprVjulMyNa6h2fRxQvjnTMVS2TOlEM8PVIQ2', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU5NjIyMDY3LCJleHAiOjE3NjAyMjY4Njd9.E6NQRBfKufKVehWYr-wVr7E0ofDDQjamwg9SSZEx0vY', '../../assets/users/alci.jpg', '2025-12-31', '2025-10-04 18:54:27', 1, '2025-10-04 18:54:27', '2025-08-23 18:16:43'),
-(2, 2, 2, 'ronal', 'ronal@fenixgym.com', '$2a$10$VdPdO0e8A2IYyR9b4S64q.O7zjgHpX.K.TQlTqushkLR/TMh5twY6', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzU4NDE0MTgzLCJleHAiOjE3NTkwMTg5ODN9.1SXjfPFIzvGo2vXeCsIZW701LiB-5ArQCgp5VsGXkgQ', '../../assets/users/default.png', '2025-11-30', '2025-09-20 19:23:03', 1, '2025-09-20 19:23:03', '2025-08-23 18:16:43'),
+(1, 1, 1, 'alci', 'alci@fenixgym.com', '$2a$10$hKR.656fStLzhfGWD3eQSuI2Jzvpvg2mt/cD6wsaRXS/hYOQ/VaB.', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzYwMjA3OTY1LCJleHAiOjE3NjA4MTI3NjV9.V2Qywl9UP3SQLe8L5Yi4fDj8V7qoZFfST2UOMyOjv28', 'JPG', '2025-12-31', '2025-10-11 13:39:25', 1, '2025-10-11 13:39:25', '2025-08-23 18:16:43'),
+(2, 2, 2, 'ronal', 'ronal@fenixgym.com', '$2a$10$VdPdO0e8A2IYyR9b4S64q.O7zjgHpX.K.TQlTqushkLR/TMh5twY6', NULL, 'JPEG', '2025-11-30', '2025-10-11 13:11:45', 1, '2025-10-11 13:39:14', '2025-08-23 18:16:43'),
 (3, 1, 3, 'david', 'david@fenixgym.com', '$2a$10$Rd.aixibctSBL6uzEV8nA.tiUQ9sNL.w9iFnMWBpoGfoGOxGdPaHu', NULL, '../../assets/users/default.png', '2025-10-15', NULL, 1, '2025-09-20 15:30:38', '2025-08-23 18:16:43'),
 (4, 3, 1004, 'Ana Rodríguez', 'ana@fenixgym.com', '$2a$10$Kj7ZgdJeYILzAh6ir1cCkuS6HbQavVJ2lF.AojC95oWYJFwEx4kNK', NULL, '../../assets/users/ana.jpg', '2026-01-15', NULL, 1, '2025-08-23 18:16:44', '2025-08-23 18:16:44'),
 (5, 2, 1005, 'Pedro Martínez', 'pedro@fenixgym.com', '$2a$10$bqZDJBPZhAdsw99y/kHkN.HsHShb3bu6QhVxV5zLiTNbrN4q/KKtG', NULL, '../../assets/users/pedro.jpg', '2025-09-30', NULL, 1, '2025-08-23 18:16:44', '2025-08-23 18:16:44');
@@ -368,6 +389,12 @@ ALTER TABLE `memberships`
 --
 ALTER TABLE `muscles`
   ADD PRIMARY KEY (`id_muscle`);
+
+--
+-- Indices de la tabla `promotions`
+--
+ALTER TABLE `promotions`
+  ADD PRIMARY KEY (`id_promotion`);
 
 --
 -- Indices de la tabla `routines`
@@ -452,10 +479,16 @@ ALTER TABLE `muscles`
   MODIFY `id_muscle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
+-- AUTO_INCREMENT de la tabla `promotions`
+--
+ALTER TABLE `promotions`
+  MODIFY `id_promotion` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `routines`
 --
 ALTER TABLE `routines`
-  MODIFY `id_routine` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_routine` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `routine_detail`
