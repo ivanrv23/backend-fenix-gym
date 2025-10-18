@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-10-2025 a las 22:33:16
+-- Tiempo de generación: 18-10-2025 a las 23:49:46
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -108,12 +108,29 @@ INSERT INTO `durations` (`id_duration`, `minutes_duration`, `description_duratio
 
 CREATE TABLE `exercises` (
   `id_exercise` int(11) NOT NULL,
-  `id_machine` int(11) NOT NULL,
+  `id_muscle` int(11) NOT NULL,
+  `name_exercise` varchar(200) NOT NULL,
   `instruction_exercise` text NOT NULL,
   `description_exercise` text DEFAULT NULL,
   `video_exercise` text DEFAULT NULL,
   `state_exercise` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `exercises`
+--
+
+INSERT INTO `exercises` (`id_exercise`, `id_muscle`, `name_exercise`, `instruction_exercise`, `description_exercise`, `video_exercise`, `state_exercise`) VALUES
+(1, 1, 'Press de banca con barra', 'Acuéstate en el banco plano, sujeta la barra con agarre medio, baja la barra hasta el pecho y empuja hacia arriba controladamente.', 'Banco plano, barra, rack', 'https://youtu.be/vUMtItXfO8Y', 1),
+(2, 1, 'Press de banca con mancuernas', 'Igual que el press con barra, pero usando mancuernas para un mayor rango de movimiento y activación estabilizadora.', 'Banco plano, mancuernas', NULL, 1),
+(3, 1, 'Press inclinado con barra', 'En banco inclinado (30°–45°), sujeta la barra y bájala hasta el pecho superior, luego empuja hacia arriba.', 'Banco inclinado, barra, rack', NULL, 1),
+(4, 1, 'Press inclinado con mancuernas', 'Igual que el press inclinado con barra, pero con mancuernas para trabajar de forma más unilateral y con más amplitud.', 'Banco inclinado, mancuernas', NULL, 1),
+(5, 1, 'Press declinado con barra', 'En banco declinado, sujeta la barra con agarre medio, bájala al pecho inferior y empuja hacia arriba.', 'Banco declinado, barra, rack', NULL, 1),
+(6, 1, 'Fondos en paralelas (para pecho)', 'Sostente en barras paralelas, inclina ligeramente el torso hacia adelante, baja flexionando codos y empuja para volver a la posición inicial.', 'Barras paralelas', NULL, 1),
+(7, 1, 'Flexiones de brazos (Push Ups)', 'En posición de plancha, baja el pecho al suelo flexionando codos y sube extendiendo brazos. Puedes variar la inclinación para trabajar distintas zonas.', 'Peso corporal', NULL, 1),
+(8, 1, 'Flexiones declinadas', 'Coloca los pies elevados en una superficie y realiza flexiones normales. Aumenta el trabajo en el pectoral superior.', 'Peso corporal, banco', NULL, 1),
+(9, 1, 'Flexiones con manos elevadas', 'Coloca las manos sobre una superficie elevada y realiza flexiones. Aumenta el trabajo en el pectoral inferior.', 'Peso corporal, banco', NULL, 1),
+(10, 1, 'Aperturas con mancuernas (flys)', 'Acostado en banco plano, con brazos extendidos y mancuernas sobre el pecho, abre los brazos en arco hasta sentir estiramiento en el pecho y regresa a la posición inicial.', 'Banco plano, mancuernas', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -268,8 +285,7 @@ CREATE TABLE `routines` (
 --
 
 INSERT INTO `routines` (`id_routine`, `id_user`, `id_level`, `id_goal`, `id_day`, `id_duration`, `date_routine`) VALUES
-(1, 1, 1, 4, 5, 3, '2025-10-05'),
-(2, 1, 5, 5, 3, 1, '2025-10-11');
+(1, 2, 1, 2, 3, 2, '2025-10-18');
 
 -- --------------------------------------------------------
 
@@ -326,8 +342,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `id_membership`, `id_customer`, `name_user`, `email_user`, `password_user`, `token_user`, `photo_user`, `expiration_user`, `login_user`, `state_user`, `updated_user`, `created_user`) VALUES
-(1, 1, 1, 'alci', 'alci@fenixgym.com', '$2a$10$hKR.656fStLzhfGWD3eQSuI2Jzvpvg2mt/cD6wsaRXS/hYOQ/VaB.', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzYwMjA3OTY1LCJleHAiOjE3NjA4MTI3NjV9.V2Qywl9UP3SQLe8L5Yi4fDj8V7qoZFfST2UOMyOjv28', 'JPG', '2025-12-31', '2025-10-11 13:39:25', 1, '2025-10-11 13:39:25', '2025-08-23 18:16:43'),
-(2, 2, 2, 'ronal', 'ronal@fenixgym.com', '$2a$10$VdPdO0e8A2IYyR9b4S64q.O7zjgHpX.K.TQlTqushkLR/TMh5twY6', NULL, 'JPEG', '2025-11-30', '2025-10-11 13:11:45', 1, '2025-10-11 13:39:14', '2025-08-23 18:16:43'),
+(1, 1, 1, 'alci', 'alci@fenixgym.com', '$2a$10$hKR.656fStLzhfGWD3eQSuI2Jzvpvg2mt/cD6wsaRXS/hYOQ/VaB.', NULL, 'JPG', '2025-12-31', '2025-10-18 14:58:48', 1, '2025-10-18 15:02:40', '2025-08-23 18:16:43'),
+(2, 2, 2, 'ronal', 'ronal@fenixgym.com', '$2a$10$VdPdO0e8A2IYyR9b4S64q.O7zjgHpX.K.TQlTqushkLR/TMh5twY6', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzYwODE3Nzc5LCJleHAiOjE3NjE0MjI1Nzl9.dDPP5UH7dAERZWnmzEf4OCbYkvCst-huQicaP_rfUEs', 'JPEG', '2025-11-30', '2025-10-18 15:02:59', 1, '2025-10-18 15:02:59', '2025-08-23 18:16:43'),
 (3, 1, 3, 'david', 'david@fenixgym.com', '$2a$10$Rd.aixibctSBL6uzEV8nA.tiUQ9sNL.w9iFnMWBpoGfoGOxGdPaHu', NULL, '../../assets/users/default.png', '2025-10-15', NULL, 1, '2025-09-20 15:30:38', '2025-08-23 18:16:43'),
 (4, 3, 1004, 'Ana Rodríguez', 'ana@fenixgym.com', '$2a$10$Kj7ZgdJeYILzAh6ir1cCkuS6HbQavVJ2lF.AojC95oWYJFwEx4kNK', NULL, '../../assets/users/ana.jpg', '2026-01-15', NULL, 1, '2025-08-23 18:16:44', '2025-08-23 18:16:44'),
 (5, 2, 1005, 'Pedro Martínez', 'pedro@fenixgym.com', '$2a$10$bqZDJBPZhAdsw99y/kHkN.HsHShb3bu6QhVxV5zLiTNbrN4q/KKtG', NULL, '../../assets/users/pedro.jpg', '2025-09-30', NULL, 1, '2025-08-23 18:16:44', '2025-08-23 18:16:44');
@@ -358,7 +374,8 @@ ALTER TABLE `durations`
 -- Indices de la tabla `exercises`
 --
 ALTER TABLE `exercises`
-  ADD PRIMARY KEY (`id_exercise`);
+  ADD PRIMARY KEY (`id_exercise`),
+  ADD KEY `id_muscle` (`id_muscle`);
 
 --
 -- Indices de la tabla `goals`
@@ -446,7 +463,7 @@ ALTER TABLE `durations`
 -- AUTO_INCREMENT de la tabla `exercises`
 --
 ALTER TABLE `exercises`
-  MODIFY `id_exercise` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_exercise` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `goals`
@@ -488,7 +505,7 @@ ALTER TABLE `promotions`
 -- AUTO_INCREMENT de la tabla `routines`
 --
 ALTER TABLE `routines`
-  MODIFY `id_routine` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_routine` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `routine_detail`
@@ -507,6 +524,16 @@ ALTER TABLE `routine_muscles`
 --
 ALTER TABLE `users`
   MODIFY `id_user` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `exercises`
+--
+ALTER TABLE `exercises`
+  ADD CONSTRAINT `exercises_ibfk_1` FOREIGN KEY (`id_muscle`) REFERENCES `muscles` (`id_muscle`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
