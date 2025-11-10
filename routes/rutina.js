@@ -22,7 +22,7 @@ router.post('/create', auth, RutinaController.createRutina);
 // Traer lista de rutinas por usuario
 router.get('/lista', auth, RutinaController.getRutinasUsuario);
 
-// // Actualizar perfil
-// router.put('/updateProfile', auth, RutinaController.updateProfile);
+// Traer detalle de rutina por id
+router.get('/detail', auth, RutinaController.getRutinaDetails);
 
 module.exports = router;

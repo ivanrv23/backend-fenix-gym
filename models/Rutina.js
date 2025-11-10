@@ -50,6 +50,21 @@ class Rutina {
     }
   }
 
+  // Validar si ya existe rutina con los mismos parámetros
+  static async validateExistRutina(usuario, experience, goal, days, duration) {
+    try {
+      const query = `
+        SELECT * FROM routines WHERE id_user = ? AND id_level = ? AND id_goal = ? AND id_day = ?
+        AND id_duration = ? LIMIT 1
+      `;
+      const rows = await db.execute(query, [usuario, experience, goal, days, duration]);
+      return rows && rows.length > 0;
+    } catch (error) {
+      console.error("Error en validateExistRutina:", error);
+      throw error;
+    }
+  }
+
   // Crear nueva rutina
   static async createRutina(usuario, experience, goal, days, duration, style) {
     try {
@@ -79,6 +94,19 @@ class Rutina {
       INNER JOIN goals g ON r.id_goal = g.id_goal INNER JOIN days d
       ON r.id_day = d.id_day WHERE r.id_user = ?`;
       const rows = await db.execute(query, [idusuario]);
+      return rows;
+    } catch (error) {
+      console.error("Error en base de datos:", error);
+      throw error;
+    }
+  }
+
+  // Obtener ejercicios de rutina por id
+  static async getRutinaDetails(idrutina) {
+    try {
+      const query = `SELECT * FROM routine_detail r INNER JOIN exercises e
+      ON r.id_exercise = e.id_exercise WHERE r.id_routine = ?`;
+      const rows = await db.execute(query, [idrutina]);
       return rows;
     } catch (error) {
       console.error("Error en base de datos:", error);

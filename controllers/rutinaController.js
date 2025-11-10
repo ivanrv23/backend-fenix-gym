@@ -71,6 +71,11 @@ class RutinaController {
       if (!usuario || !experience || !goal || !days || !duration || !style) {
         return errorResponse(res, 'Todos los campos son obligatorios', 400);
       }
+      // Validar si ya tiene la rutina creada
+      const exist = await Rutina.validateExistRutina(usuario, experience, goal, days, duration);
+      if (exist) {
+        return errorResponse(res, 'Ya existe rutina creada', 500);
+      }
       // Guardar rutina en BD
       const created = await Rutina.createRutina(usuario, experience, goal, days, duration, style);
       if (!created) {
@@ -102,6 +107,25 @@ class RutinaController {
     } catch (error) {
       console.error('Error al obtener rutinas:', error);
       return errorResponse(res, 'Error al obtener rutinas', 500);
+    }
+  }
+
+  static async getRutinaDetails(req, res) {
+    try {
+      const { idrutina } = req.query;
+      if (!idrutina) {
+        return errorResponse(res, 'Error de rutina', 404);
+      }
+      const dataresult = await Rutina.getRutinaDetails(idrutina);
+      if (!dataresult || dataresult.length === 0) {
+        return errorResponse(res, 'No se encontró ejercicios', 404);
+      }
+      return successResponse(res, {
+          data: dataresult
+        });
+    } catch (error) {
+      console.error('Error al obtener ejercicios de rutina:', error);
+      return errorResponse(res, 'Error al obtener rutina details', 500);
     }
   }
 }
