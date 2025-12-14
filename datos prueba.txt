@@ -111,3 +111,472 @@ INSERT INTO users (
     'expired',
     DATE_SUB(NOW(), INTERVAL 1 MONTH)
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- =============================================
+-- EJERCICIOS DE PECHO (continuación)
+-- =============================================
+
+INSERT INTO `exercises` (`id_exercise`, `name_exercise`, `instruction_exercise`, `description_exercise`, `video_exercise`, `state_exercise`) VALUES
+(11, 'Aperturas inclinadas con mancuernas', 'En banco inclinado (30-45°), con mancuernas sobre el pecho, abre los brazos en arco hasta sentir estiramiento y regresa.', 'Banco inclinado, mancuernas', NULL, 1),
+(12, 'Aperturas en polea (cable crossover)', 'De pie entre dos poleas altas, toma los mangos y junta las manos frente al pecho con brazos ligeramente flexionados.', 'Máquina de poleas cruzadas', NULL, 1),
+(13, 'Press en máquina (chest press)', 'Sentado en la máquina, empuja los mangos hacia adelante manteniendo la espalda apoyada en el respaldo.', 'Máquina de press de pecho', NULL, 1),
+
+-- =============================================
+-- EJERCICIOS DE ESPALDA
+-- =============================================
+
+(14, 'Dominadas (Pull-ups)', 'Cuelga de una barra con agarre prono, eleva el cuerpo hasta que la barbilla supere la barra, baja controladamente.', 'Barra de dominadas', NULL, 1),
+(15, 'Remo con barra', 'De pie con ligera inclinación, sujeta la barra con agarre prono, lleva la barra hacia el abdomen y baja controladamente.', 'Barra, discos', NULL, 1),
+(16, 'Remo con mancuerna a una mano', 'Apoyado en banco con una rodilla y mano, rema la mancuerna hacia la cadera manteniendo el codo cerca del cuerpo.', 'Banco, mancuerna', NULL, 1),
+(17, 'Jalón al pecho (Lat pulldown)', 'Sentado en máquina de jalones, toma la barra ancha y jálala hasta el pecho superior manteniendo el torso erguido.', 'Máquina de jalones', NULL, 1),
+(18, 'Remo en polea baja', 'Sentado frente a polea baja, toma el mango y jala hacia el abdomen manteniendo la espalda recta.', 'Máquina de remo en polea', NULL, 1),
+(19, 'Jalón con agarre cerrado', 'Similar al jalón al pecho pero con agarre estrecho, enfatiza el trabajo de dorsales medios.', 'Máquina de jalones', NULL, 1),
+(20, 'Peso muerto convencional', 'Con barra en el suelo, flexiona caderas y rodillas, agarra la barra y extiende caderas hasta estar erguido.', 'Barra, discos, rack', NULL, 1),
+(21, 'Peso muerto rumano', 'Con barra en manos, desciende flexionando caderas manteniendo piernas casi extendidas, sintiendo estiramiento en femorales.', 'Barra, discos', NULL, 1),
+(22, 'Encogimientos de hombros con barra', 'De pie con barra en manos, eleva los hombros hacia las orejas contrayendo el trapecio, baja controladamente.', 'Barra, discos', NULL, 1),
+
+-- =============================================
+-- EJERCICIOS DE HOMBROS
+-- =============================================
+
+(23, 'Press militar con barra', 'De pie o sentado, sujeta la barra a la altura de los hombros y empuja hacia arriba hasta extender los brazos.', 'Barra, discos, rack', NULL, 1),
+(24, 'Press militar con mancuernas', 'Sentado con mancuernas a la altura de los hombros, empuja hacia arriba hasta extender los brazos.', 'Banco, mancuernas', NULL, 1),
+(25, 'Elevaciones laterales', 'De pie con mancuernas a los lados, eleva los brazos lateralmente hasta la altura de los hombros.', 'Mancuernas', NULL, 1),
+(26, 'Elevaciones frontales', 'De pie con mancuernas al frente, eleva los brazos al frente hasta la altura de los hombros alternadamente.', 'Mancuernas', NULL, 1),
+(27, 'Pájaros (elevaciones posteriores)', 'Inclinado hacia adelante, eleva las mancuernas lateralmente enfocándote en el deltoides posterior.', 'Mancuernas', NULL, 1),
+(28, 'Face pulls', 'En polea alta, jala la cuerda hacia la cara separando las manos, trabajando deltoides posterior y trapecio.', 'Máquina de poleas, cuerda', NULL, 1),
+
+-- =============================================
+-- EJERCICIOS DE PIERNAS
+-- =============================================
+
+(29, 'Sentadilla con barra (back squat)', 'Con barra sobre los hombros, desciende flexionando rodillas y caderas hasta que muslos estén paralelos al suelo.', 'Barra, discos, rack', NULL, 1),
+(30, 'Sentadilla frontal', 'Con barra sobre la clavícula y hombros frontales, realiza sentadilla manteniendo torso más vertical.', 'Barra, discos, rack', NULL, 1),
+(31, 'Prensa de piernas', 'Sentado en máquina, empuja la plataforma con los pies hasta extender las piernas sin bloquear rodillas.', 'Máquina de prensa', NULL, 1),
+(32, 'Zancadas (lunges)', 'De pie, da un paso largo adelante y desciende flexionando ambas rodillas, alterna las piernas.', 'Mancuernas o barra', NULL, 1),
+(33, 'Extensiones de cuádriceps', 'Sentado en máquina, extiende las piernas elevando el peso con los cuádriceps hasta la extensión completa.', 'Máquina de extensiones', NULL, 1),
+(34, 'Curl femoral acostado', 'Acostado boca abajo en máquina, flexiona las piernas llevando los talones hacia los glúteos.', 'Máquina de curl femoral', NULL, 1),
+(35, 'Curl femoral sentado', 'Sentado en máquina, flexiona las piernas hacia abajo contra la resistencia.', 'Máquina de curl femoral', NULL, 1),
+(36, 'Elevaciones de gemelos de pie', 'De pie con los hombros bajo las almohadillas, eleva los talones lo más alto posible contrayendo las pantorrillas.', 'Máquina de gemelos', NULL, 1),
+(37, 'Elevaciones de gemelos sentado', 'Sentado con peso sobre las rodillas, eleva los talones contrayendo las pantorrillas.', 'Máquina de gemelos sentado', NULL, 1),
+(38, 'Prensa hack', 'En máquina hack, con espalda apoyada, empuja la plataforma con los pies hasta extender las piernas.', 'Máquina hack squat', NULL, 1),
+(39, 'Peso muerto sumo', 'Con postura amplia y pies girados, levanta la barra desde el suelo extendiendo caderas y rodillas.', 'Barra, discos', NULL, 1),
+(40, 'Hip thrust (elevación de cadera)', 'Con espalda alta apoyada en banco y barra sobre cadera, eleva la cadera contrayendo glúteos.', 'Banco, barra, discos', NULL, 1),
+
+-- =============================================
+-- EJERCICIOS DE BRAZOS
+-- =============================================
+
+(41, 'Curl de bíceps con barra', 'De pie con barra en manos y agarre supino, flexiona los codos llevando la barra hacia los hombros.', 'Barra, discos', NULL, 1),
+(42, 'Curl de bíceps con mancuernas', 'De pie con mancuernas, flexiona los codos alternadamente o simultáneamente llevando peso hacia hombros.', 'Mancuernas', NULL, 1),
+(43, 'Curl martillo', 'De pie con mancuernas en agarre neutro, flexiona los codos manteniendo las palmas enfrentadas.', 'Mancuernas', NULL, 1),
+(44, 'Curl predicador', 'Sentado en banco predicador, con brazos apoyados, flexiona codos llevando barra o mancuernas hacia hombros.', 'Banco predicador, barra o mancuernas', NULL, 1),
+(45, 'Press francés (extensión de tríceps acostado)', 'Acostado con barra sobre el pecho, baja la barra hacia la frente flexionando solo los codos, extiende.', 'Banco, barra Z', NULL, 1),
+(46, 'Extensión de tríceps en polea', 'De pie frente a polea alta, empuja la barra o cuerda hacia abajo extendiendo los codos.', 'Máquina de poleas', NULL, 1),
+(47, 'Patada de tríceps', 'Inclinado con mancuerna en mano, extiende el codo hacia atrás manteniendo el brazo superior paralelo al suelo.', 'Banco, mancuerna', NULL, 1),
+(48, 'Fondos en banco (dips para tríceps)', 'Con manos apoyadas en banco detrás de ti, baja el cuerpo flexionando codos y empuja para subir.', 'Banco', NULL, 1),
+(49, 'Curl de bíceps en polea baja', 'De pie frente a polea baja con barra, flexiona los codos llevando la barra hacia los hombros.', 'Máquina de poleas', NULL, 1),
+
+-- =============================================
+-- EJERCICIOS DE CORE Y ABDOMEN
+-- =============================================
+
+(50, 'Plancha (plank)', 'En posición de antebrazo con cuerpo recto, mantén la posición contrayendo el core.', 'Peso corporal', NULL, 1),
+(51, 'Plancha lateral', 'De lado apoyado en un antebrazo, mantén el cuerpo recto formando una línea desde pies hasta cabeza.', 'Peso corporal', NULL, 1),
+(52, 'Crunch abdominal', 'Acostado boca arriba con rodillas flexionadas, eleva el torso superior contrayendo el abdomen.', 'Colchoneta', NULL, 1),
+(53, 'Elevaciones de piernas', 'Acostado boca arriba, eleva las piernas rectas hasta formar 90° con el torso, baja controladamente.', 'Colchoneta', NULL, 1),
+(54, 'Russian twist', 'Sentado con torso inclinado, gira el torso de lado a lado tocando el suelo con las manos.', 'Peso corporal o disco', NULL, 1),
+(55, 'Mountain climbers', 'En posición de plancha, lleva alternadamente las rodillas hacia el pecho en movimiento rápido.', 'Peso corporal', NULL, 1),
+(56, 'Rueda abdominal', 'De rodillas sujetando la rueda, rueda hacia adelante extendiendo el cuerpo y regresa.', 'Rueda abdominal', NULL, 1),
+(57, 'Crunch en polea alta', 'De rodillas frente a polea alta, sostén cuerda detrás de la cabeza y flexiona el torso hacia abajo.', 'Máquina de poleas', NULL, 1),
+(58, 'Oblicuos con mancuerna', 'De pie con mancuerna en una mano, inclina el torso lateralmente hacia el lado del peso.', 'Mancuerna', NULL, 1),
+
+-- =============================================
+-- EJERCICIOS FUNCIONALES Y COMPUESTOS
+-- =============================================
+
+(59, 'Burpees', 'Desde posición de pie, baja a plancha, haz flexión, salta con pies hacia manos y salta verticalmente.', 'Peso corporal', NULL, 1),
+(60, 'Thrusters', 'Con mancuernas en hombros, realiza sentadilla y al subir empuja las mancuernas sobre la cabeza.', 'Mancuernas', NULL, 1),
+(61, 'Clean and press', 'Levanta la barra desde el suelo a los hombros en un movimiento explosivo, luego presiona sobre la cabeza.', 'Barra, discos', NULL, 1),
+(62, 'Kettlebell swings', 'Con kettlebell entre las piernas, balancea hacia adelante hasta altura de hombros usando cadera.', 'Kettlebell', NULL, 1),
+(63, 'Box jumps', 'De pie frente a un cajón, salta explosivamente sobre él y baja controladamente.', 'Cajón pliométrico', NULL, 1),
+(64, 'Farmers walk', 'Camina sosteniendo pesas pesadas en ambas manos manteniendo postura erguida y core activo.', 'Mancuernas o kettlebells', NULL, 1),
+(65, 'Battle ropes', 'Sostén cuerdas gruesas y crea ondas golpeándolas contra el suelo alternadamente o simultáneamente.', 'Cuerdas de batalla', NULL, 1);
+
+-- =============================================
+-- RELACIONES EXERCISE_MUSCLES
+-- =============================================
+
+-- EJERCICIOS DE PECHO (1-13)
+INSERT INTO `exercise_muscles` (`id_exercise`, `id_muscle`, `level_detail`) VALUES
+-- Press de banca con barra (1)
+(1, 1, 'principal'),
+(1, 4, 'secundario'),
+(1, 10, 'secundario'),
+(1, 17, 'estabilizador'),
+-- Press de banca con mancuernas (2)
+(2, 1, 'principal'),
+(2, 4, 'secundario'),
+(2, 10, 'secundario'),
+(2, 17, 'estabilizador'),
+-- Press inclinado con barra (3)
+(3, 1, 'principal'),
+(3, 4, 'principal'),
+(3, 10, 'secundario'),
+(3, 17, 'estabilizador'),
+-- Press inclinado con mancuernas (4)
+(4, 1, 'principal'),
+(4, 4, 'principal'),
+(4, 10, 'secundario'),
+(4, 17, 'estabilizador'),
+-- Press declinado con barra (5)
+(5, 1, 'principal'),
+(5, 10, 'secundario'),
+(5, 4, 'secundario'),
+(5, 17, 'estabilizador'),
+-- Fondos en paralelas (6)
+(6, 1, 'principal'),
+(6, 10, 'principal'),
+(6, 4, 'secundario'),
+(6, 8, 'estabilizador'),
+-- Flexiones (7)
+(7, 1, 'principal'),
+(7, 10, 'secundario'),
+(7, 4, 'secundario'),
+(7, 8, 'estabilizador'),
+-- Flexiones declinadas (8)
+(8, 1, 'principal'),
+(8, 4, 'secundario'),
+(8, 10, 'secundario'),
+(8, 8, 'estabilizador'),
+-- Flexiones con manos elevadas (9)
+(9, 1, 'principal'),
+(9, 10, 'secundario'),
+(9, 4, 'secundario'),
+(9, 8, 'estabilizador'),
+-- Aperturas con mancuernas (10)
+(10, 1, 'principal'),
+(10, 4, 'secundario'),
+(10, 17, 'estabilizador'),
+(10, 9, 'estabilizador'),
+-- Aperturas inclinadas (11)
+(11, 1, 'principal'),
+(11, 4, 'secundario'),
+(11, 17, 'estabilizador'),
+(11, 9, 'estabilizador'),
+-- Cable crossover (12)
+(12, 1, 'principal'),
+(12, 4, 'secundario'),
+(12, 8, 'estabilizador'),
+(12, 17, 'estabilizador'),
+-- Press en máquina (13)
+(13, 1, 'principal'),
+(13, 4, 'secundario'),
+(13, 10, 'secundario'),
+(13, 17, 'estabilizador'),
+
+-- EJERCICIOS DE ESPALDA (14-22)
+-- Dominadas (14)
+(14, 2, 'principal'),
+(14, 3, 'secundario'),
+(14, 9, 'secundario'),
+(14, 8, 'estabilizador'),
+-- Remo con barra (15)
+(15, 2, 'principal'),
+(15, 3, 'principal'),
+(15, 9, 'secundario'),
+(15, 12, 'estabilizador'),
+-- Remo con mancuerna (16)
+(16, 2, 'principal'),
+(16, 3, 'secundario'),
+(16, 9, 'secundario'),
+(16, 12, 'estabilizador'),
+-- Jalón al pecho (17)
+(17, 2, 'principal'),
+(17, 3, 'secundario'),
+(17, 9, 'secundario'),
+(17, 8, 'estabilizador'),
+-- Remo en polea baja (18)
+(18, 2, 'principal'),
+(18, 3, 'secundario'),
+(18, 9, 'secundario'),
+(18, 12, 'estabilizador'),
+-- Jalón agarre cerrado (19)
+(19, 2, 'principal'),
+(19, 3, 'secundario'),
+(19, 9, 'secundario'),
+(19, 8, 'estabilizador'),
+-- Peso muerto convencional (20)
+(20, 12, 'principal'),
+(20, 7, 'principal'),
+(20, 5, 'principal'),
+(20, 3, 'secundario'),
+(20, 15, 'estabilizador'),
+-- Peso muerto rumano (21)
+(21, 7, 'principal'),
+(21, 5, 'principal'),
+(21, 12, 'secundario'),
+(21, 3, 'estabilizador'),
+-- Encogimientos (22)
+(22, 11, 'principal'),
+(22, 3, 'secundario'),
+(22, 15, 'estabilizador'),
+(22, 12, 'estabilizador'),
+
+-- EJERCICIOS DE HOMBROS (23-28)
+-- Press militar barra (23)
+(23, 4, 'principal'),
+(23, 10, 'secundario'),
+(23, 1, 'secundario'),
+(23, 8, 'estabilizador'),
+-- Press militar mancuernas (24)
+(24, 4, 'principal'),
+(24, 10, 'secundario'),
+(24, 1, 'secundario'),
+(24, 8, 'estabilizador'),
+-- Elevaciones laterales (25)
+(25, 4, 'principal'),
+(25, 11, 'secundario'),
+(25, 8, 'estabilizador'),
+(25, 17, 'estabilizador'),
+-- Elevaciones frontales (26)
+(26, 4, 'principal'),
+(26, 1, 'secundario'),
+(26, 8, 'estabilizador'),
+(26, 17, 'estabilizador'),
+-- Pájaros (27)
+(27, 4, 'principal'),
+(27, 3, 'secundario'),
+(27, 18, 'secundario'),
+(27, 8, 'estabilizador'),
+-- Face pulls (28)
+(28, 4, 'principal'),
+(28, 11, 'secundario'),
+(28, 3, 'secundario'),
+(28, 18, 'estabilizador'),
+
+-- EJERCICIOS DE PIERNAS (29-40)
+-- Sentadilla back squat (29)
+(29, 6, 'principal'),
+(29, 5, 'principal'),
+(29, 7, 'secundario'),
+(29, 8, 'estabilizador'),
+-- Sentadilla frontal (30)
+(30, 6, 'principal'),
+(30, 5, 'secundario'),
+(30, 8, 'principal'),
+(30, 12, 'estabilizador'),
+-- Prensa de piernas (31)
+(31, 6, 'principal'),
+(31, 5, 'principal'),
+(31, 7, 'secundario'),
+(31, 16, 'estabilizador'),
+-- Zancadas (32)
+(32, 6, 'principal'),
+(32, 5, 'principal'),
+(32, 7, 'secundario'),
+(32, 8, 'estabilizador'),
+-- Extensiones cuádriceps (33)
+(33, 6, 'principal'),
+(33, 8, 'estabilizador'),
+(33, 21, 'estabilizador'),
+(33, 5, 'estabilizador'),
+-- Curl femoral acostado (34)
+(34, 7, 'principal'),
+(34, 5, 'secundario'),
+(34, 16, 'estabilizador'),
+(34, 8, 'estabilizador'),
+-- Curl femoral sentado (35)
+(35, 7, 'principal'),
+(35, 5, 'secundario'),
+(35, 8, 'estabilizador'),
+(35, 16, 'estabilizador'),
+-- Elevaciones gemelos de pie (36)
+(36, 16, 'principal'),
+(36, 20, 'secundario'),
+(36, 8, 'estabilizador'),
+(36, 6, 'estabilizador'),
+-- Elevaciones gemelos sentado (37)
+(37, 16, 'principal'),
+(37, 20, 'principal'),
+(37, 21, 'estabilizador'),
+(37, 7, 'estabilizador'),
+-- Prensa hack (38)
+(38, 6, 'principal'),
+(38, 5, 'principal'),
+(38, 7, 'secundario'),
+(38, 8, 'estabilizador'),
+-- Peso muerto sumo (39)
+(39, 13, 'principal'),
+(39, 5, 'principal'),
+(39, 7, 'secundario'),
+(39, 12, 'secundario'),
+-- Hip thrust (40)
+(40, 5, 'principal'),
+(40, 7, 'secundario'),
+(40, 8, 'secundario'),
+(40, 12, 'estabilizador'),
+
+-- EJERCICIOS DE BRAZOS (41-49)
+-- Curl barra (41)
+(41, 9, 'principal'),
+(41, 15, 'secundario'),
+(41, 4, 'estabilizador'),
+(41, 8, 'estabilizador'),
+-- Curl mancuernas (42)
+(42, 9, 'principal'),
+(42, 15, 'secundario'),
+(42, 4, 'estabilizador'),
+(42, 8, 'estabilizador'),
+-- Curl martillo (43)
+(43, 9, 'principal'),
+(43, 15, 'principal'),
+(43, 4, 'estabilizador'),
+(43, 8, 'estabilizador'),
+-- Curl predicador (44)
+(44, 9, 'principal'),
+(44, 15, 'secundario'),
+(44, 4, 'estabilizador'),
+(44, 8, 'estabilizador'),
+-- Press francés (45)
+(45, 10, 'principal'),
+(45, 4, 'secundario'),
+(45, 8, 'estabilizador'),
+(45, 1, 'estabilizador'),
+-- Extensión tríceps polea (46)
+(46, 10, 'principal'),
+(46, 4, 'secundario'),
+(46, 8, 'estabilizador'),
+(46, 15, 'estabilizador'),
+-- Patada tríceps (47)
+(47, 10, 'principal'),
+(47, 4, 'secundario'),
+(47, 12, 'estabilizador'),
+(47, 8, 'estabilizador'),
+-- Fondos en banco (48)
+(48, 10, 'principal'),
+(48, 4, 'secundario'),
+(48, 1, 'secundario'),
+(48, 8, 'estabilizador'),
+-- Curl polea baja (49)
+(49, 9, 'principal'),
+(49, 15, 'secundario'),
+(49, 8, 'estabilizador'),
+(49, 4, 'estabilizador'),
+
+-- EJERCICIOS DE CORE (50-58)
+-- Plancha (50)
+(50, 8, 'principal'),
+(50, 12, 'secundario'),
+(50, 4, 'estabilizador'),
+(50, 6, 'estabilizador'),
+-- Plancha lateral (51)
+(51, 14, 'principal'),
+(51, 8, 'secundario'),
+(51, 13, 'estabilizador'),
+(51, 4, 'estabilizador'),
+-- Crunch (52)
+(52, 8, 'principal'),
+(52, 22, 'secundario'),
+(52, 14, 'estabilizador'),
+(52, 12, 'estabilizador'),
+-- Elevaciones de piernas (53)
+(53, 8, 'principal'),
+(53, 22, 'principal'),
+(53, 6, 'secundario'),
+(53, 12, 'estabilizador'),
+-- Russian twist (54)
+(54, 14, 'principal'),
+(54, 8, 'secundario'),
+(54, 12, 'estabilizador'),
+(54, 22, 'estabilizador'),
+-- Mountain climbers (55)
+(55, 8, 'principal'),
+(55, 22, 'secundario'),
+(55, 6, 'secundario'),
+(55, 4, 'estabilizador'),
+-- Rueda abdominal (56)
+(56, 8, 'principal'),
+(56, 12, 'secundario'),
+(56, 4, 'secundario'),
+(56, 2, 'estabilizador'),
+-- Crunch polea (57)
+(57, 8, 'principal'),
+(57, 12, 'secundario'),
+(57, 14, 'secundario'),
+(57, 2, 'estabilizador'),
+-- Oblicuos mancuerna (58)
+(58, 14, 'principal'),
+(58, 8, 'secundario'),
+(58, 12, 'secundario'),
+(58, 15, 'estabilizador'),
+
+-- EJERCICIOS FUNCIONALES (59-65)
+-- Burpees (59)
+(59, 6, 'principal'),
+(59, 1, 'principal'),
+(59, 8, 'principal'),
+(59, 4, 'secundario'),
+-- Thrusters (60)
+(60, 6, 'principal'),
+(60, 4, 'principal'),
+(60, 5, 'secundario'),
+(60, 8, 'secundario'),
+-- Clean and press (61)
+(61, 4, 'principal'),
+(61, 3, 'principal'),
+(61, 6, 'secundario'),
+(61, 10, 'secundario'),
+-- Kettlebell swings (62)
+(62, 5, 'principal'),
+(62, 7, 'secundario'),
+(62, 12, 'secundario'),
+(62, 8, 'estabilizador'),
+-- Box jumps (63)
+(63, 6, 'principal'),
+(63, 5, 'principal'),
+(63, 16, 'secundario'),
+(63, 8, 'estabilizador'),
+-- Farmers walk (64)
+(64, 15, 'principal'),
+(64, 11, 'principal'),
+(64, 8, 'secundario'),
+(64, 12, 'estabilizador'),
+-- Battle ropes (65)
+(65, 4, 'principal'),
+(65, 15, 'secundario'),
+(65, 8, 'secundario'),
+(65, 11, 'estabilizador');

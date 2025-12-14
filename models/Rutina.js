@@ -104,8 +104,11 @@ class Rutina {
   // Obtener ejercicios de rutina por id
   static async getRutinaDetails(idrutina) {
     try {
-      const query = `SELECT * FROM routine_detail r INNER JOIN exercises e
-      ON r.id_exercise = e.id_exercise WHERE r.id_routine = ?`;
+      const query = `SELECT r.*, e.name_exercise, e.instruction_exercise, e.description_exercise,
+      e.video_exercise, em.level_detail, m.name_muscle, m.description_muscle
+      FROM routine_detail r INNER JOIN exercises e ON r.id_exercise = e.id_exercise
+      INNER JOIN exercise_muscles em ON e.id_exercise = em.id_exercise
+      INNER JOIN muscles m ON em.id_muscle = m.id_muscle WHERE r.id_routine = ?`;
       const rows = await db.execute(query, [idrutina]);
       return rows;
     } catch (error) {

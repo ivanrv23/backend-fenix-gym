@@ -10,8 +10,8 @@ class RutinaController {
         return errorResponse(res, 'No se encontraron niveles de experiencia', 404);
       }
       return successResponse(res, {
-          data: dataresult
-        });
+        data: dataresult
+      });
     } catch (error) {
       console.error('Error al obtener niveles:', error);
       return errorResponse(res, 'Error al obtener niveles', 500);
@@ -25,8 +25,8 @@ class RutinaController {
         return errorResponse(res, 'No se encontraron objetivos', 404);
       }
       return successResponse(res, {
-          data: dataresult
-        });
+        data: dataresult
+      });
     } catch (error) {
       console.error('Error al obtener objetivos:', error);
       return errorResponse(res, 'Error al obtener objetivos', 500);
@@ -40,8 +40,8 @@ class RutinaController {
         return errorResponse(res, 'No se encontraron dias', 404);
       }
       return successResponse(res, {
-          data: dataresult
-        });
+        data: dataresult
+      });
     } catch (error) {
       console.error('Error al obtener dias:', error);
       return errorResponse(res, 'Error al obtener dias', 500);
@@ -55,12 +55,160 @@ class RutinaController {
         return errorResponse(res, 'No se encontró la duración', 404);
       }
       return successResponse(res, {
-          data: dataresult
-        });
+        data: dataresult
+      });
     } catch (error) {
       console.error('Error al obtener duración:', error);
       return errorResponse(res, 'Error al obtener duración', 500);
     }
+  }
+
+  static async createEjerciciosRutina(experience, goal, days, duration) {
+    let ejercicios = [];
+    let rondas, repeticiones, peso, descanso;
+
+    // Primero, obtenemos ejercicios de la base de datos según parámetros
+    const ejerciciosDisponibles = await this.getEjerciciosDisponibles(experience, goal);
+
+    if (!ejerciciosDisponibles || ejerciciosDisponibles.length === 0) {
+      throw new Error('No hay ejercicios disponibles para los criterios seleccionados');
+    }
+
+    // Configuramos parámetros según experiencia, objetivo, días y duración
+    switch (experience) {
+      case 1: // principiante
+        switch (goal) {
+          case 1: // Perder peso
+            switch (days) {
+              case 1: // Un día a la semana
+                switch (duration) {
+                  case 1: // 30 minutos al día
+                    rondas = 3;
+                    repeticiones = 10;
+                    peso = 0;
+                    descanso = 60;
+                    ejercicios = [30, 59, 32, 51, 18, 8, 55, 63];
+                    break;
+                  case 2: // 45 minutos al día
+                    rondas = 3;
+                    repeticiones = 12;
+                    peso = 0;
+                    descanso = 60;
+                    ejercicios = [30, 59, 32, 51, 18, 8, 55, 63];
+                    break;
+                  case 3: // 60 minutos al día
+                    rondas = 3;
+                    repeticiones = 15;
+                    peso = 0;
+                    descanso = 60;
+                    ejercicios = [30, 59, 32, 51, 18, 8, 55, 63];
+                    break;
+                  case 4: // 90 minutos al día
+                    rondas = 4;
+                    repeticiones = 15;
+                    peso = 0;
+                    descanso = 60;
+                    ejercicios = [30, 59, 32, 51, 18, 8, 55, 63];
+                    break;
+                  case 5: // 120 minutos al día
+                    rondas = 4;
+                    repeticiones = 20;
+                    peso = 0;
+                    descanso = 60;
+                    ejercicios = [30, 59, 32, 51, 18, 8, 55, 63];
+                    break;
+                  default:
+                    rondas = 3;
+                    repeticiones = 12;
+                    peso = 0;
+                    descanso = 60;
+                    ejercicios = [30, 59, 32, 51, 18, 8, 55, 63];
+                }
+                break;
+              case 2: // Dos días a la semana
+              case 3: // Tres días a la semana
+              case 4: // Cuatro días a la semana
+              case 5: // Cinco días a la semana
+              case 6: // Seis días a la semana
+              case 7: // Siete días a la semana
+                // Configuración por defecto para otros días
+                rondas = 3;
+                repeticiones = 12;
+                peso = 0;
+                descanso = 60;
+                break;
+              default:
+                rondas = 3;
+                repeticiones = 12;
+                peso = 0;
+                descanso = 60;
+            }
+            break;
+          case 2: // Ganar músculo
+            rondas = 4;
+            repeticiones = 8;
+            peso = 5; // kg
+            descanso = 90;
+            ejercicios = [29, 21, 2, 17, 25, 42, 46, 50];
+            break;
+          case 3: // Aumentar fuerza
+            rondas = 5;
+            repeticiones = 5;
+            peso = 10; // kg
+            descanso = 120;
+            ejercicios = [30, 20, 24, 14, 66, 67, 51, 64];
+            break;
+          case 4: // Resistencia
+            rondas = 3;
+            repeticiones = 20;
+            peso = 0;
+            descanso = 45;
+            break;
+          case 5: // Salud General
+            rondas = 3;
+            repeticiones = 12;
+            peso = 0;
+            descanso = 60;
+            break;
+          default:
+            rondas = 3;
+            repeticiones = 10;
+            peso = 0;
+            descanso = 60;
+        }
+        break;
+      case 2: // intermedio
+        // Configuraciones para intermedio...
+        rondas = 4;
+        repeticiones = 10;
+        peso = 5;
+        descanso = 75;
+        break;
+      case 3: // Avanzado
+        rondas = 5;
+        repeticiones = 8;
+        peso = 10;
+        descanso = 90;
+        break;
+      case 4: // Competitivo
+        rondas = 6;
+        repeticiones = 6;
+        peso = 15;
+        descanso = 120;
+        break;
+      case 5: // Recreativo
+        rondas = 3;
+        repeticiones = 15;
+        peso = 0;
+        descanso = 60;
+        break;
+      default:
+        rondas = 3;
+        repeticiones = 10;
+        peso = 0;
+        descanso = 60;
+    }
+    return ejercicios;
   }
 
   static async createRutina(req, res) {
@@ -80,6 +228,14 @@ class RutinaController {
       const created = await Rutina.createRutina(usuario, experience, goal, days, duration, style);
       if (!created) {
         return errorResponse(res, 'Error al crear la rutina', 500);
+      }
+      const rutinaId = created.id;
+      const ejercicios = this.createEjerciciosRutina(experience, goal, days, duration);
+      // Aquí llamarías a otro método para crear el detalle
+      const detalleCreado = await Rutina.crearDetalleRutina(rutinaId, ejercicios);
+      if (!detalleCreado) {
+        // Opcional: puedes decidir si eliminar la rutina si falla el detalle
+        return errorResponse(res, 'Rutina creada pero error al agregar ejercicios', 500);
       }
       return successResponse(res, {
         success: true,
@@ -102,8 +258,8 @@ class RutinaController {
         return errorResponse(res, 'No se encontró rutinas', 404);
       }
       return successResponse(res, {
-          data: dataresult
-        });
+        data: dataresult
+      });
     } catch (error) {
       console.error('Error al obtener rutinas:', error);
       return errorResponse(res, 'Error al obtener rutinas', 500);
@@ -121,8 +277,8 @@ class RutinaController {
         return errorResponse(res, 'No se encontró ejercicios', 404);
       }
       return successResponse(res, {
-          data: dataresult
-        });
+        data: dataresult
+      });
     } catch (error) {
       console.error('Error al obtener ejercicios de rutina:', error);
       return errorResponse(res, 'Error al obtener rutina details', 500);
