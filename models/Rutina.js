@@ -87,6 +87,83 @@ class Rutina {
     }
   }
 
+  static async getGruposMusculares() {
+    try {
+      const query = `SELECT * FROM group_muscles ORDER BY id_group`;
+      const result = await db.execute(query);
+      return result;
+    } catch (error) {
+      console.error("Error al obtener grupos musculares:", error);
+      throw error;
+    }
+  }
+
+  static async getMusculosPorGrupo() {
+    try {
+      const query = `
+        SELECT m.id_muscle, m.id_group, m.name_muscle 
+        FROM muscles m 
+        WHERE m.state_muscle = 1 
+        ORDER BY m.id_group, m.id_muscle
+      `;
+      const result = await db.execute(query);
+      return result;
+    } catch (error) {
+      console.error("Error al obtener músculos por grupo:", error);
+      throw error;
+    }
+  }
+
+  static async getEjerciciosDisponibles() {
+    try {
+      const query = `
+        SELECT DISTINCT e.id_exercise, e.name_exercise, em.id_muscle, em.level_detail, m.name_muscle
+        FROM exercises e INNER JOIN exercise_muscles em ON e.id_exercise = em.id_exercise
+        INNER JOIN muscles m ON em.id_muscle = m.id_muscle
+        WHERE e.state_exercise = 1 ORDER BY e.id_exercise, em.level_detail DESC
+      `;
+      const result = await db.execute(query);
+      return result;
+    } catch (error) {
+      console.error("Error en base de datos:", error);
+      throw error;
+    }
+  }
+
+  static async crearDetalleRutina(rutinaId, ejerciciosPorDia) {
+    if (!ejerciciosPorDia || ejerciciosPorDia.length === 0) {
+      return true;
+    }
+    const placeholders = [];
+    const values = [];
+    ejerciciosPorDia.forEach(diaData => {
+      diaData.ejercicios.forEach(ej => {
+        placeholders.push('(?, ?, ?, ?, ?, ?, ?)');
+        values.push(
+          rutinaId,
+          diaData.dia,
+          ej.id_exercise || null,
+          ej.weight_detail || 0,
+          ej.repetition_detail || 10,
+          ej.round_detail || 3,
+          ej.rest_detail || 60
+        );
+      });
+    });
+    const query = `
+      INSERT INTO routine_detail 
+      (id_routine, day_detail, id_exercise, weight_detail, repetition_detail, round_detail, rest_detail)
+      VALUES ${placeholders.join(', ')}
+    `;
+    try {
+      const result = await db.execute(query, values);
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error('Error al insertar detalle de rutina por días:', error);
+      throw error;
+    }
+  }
+
   // Obtener lista de rutinas por usuario
   static async getRutinasUsuario(idusuario) {
     try {
