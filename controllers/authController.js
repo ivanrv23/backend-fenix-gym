@@ -135,9 +135,12 @@ class AuthController {
         // Actualizar tabla customers
         if (idcliente && (documento || nombres || apellidos || direccion ||
           telefono || nacimiento || peso || estatura || genero)) {
+          const nacimientoFormateado = nacimiento
+            ? new Date(nacimiento).toISOString().split('T')[0]
+            : null;
           await User.updateCustomer(
             idcliente, documento, nombres, apellidos,
-            direccion, telefono, nacimiento, peso, estatura, genero
+            direccion, telefono, nacimientoFormateado, peso, estatura, genero
           );
           console.log('Cliente actualizado en tabla customers');
         }
